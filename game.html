@@ -1,1 +1,256 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>World on Edge — Command Center</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at center, #141a21 0%, #080b0f 70%);
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            height: 72px;
+            border-bottom: 1px solid #303944;
+            background: rgba(8, 11, 15, 0.97);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 28px;
+        }
+
+        .game-title {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 3px;
+        }
+
+        .player-info {
+            text-align: right;
+        }
+
+        #player-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        #player-role {
+            margin-top: 4px;
+            color: #7f8b98;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* RESOURCE PANEL */
+        .resources {
+            position: absolute;
+            top: 92px;
+            left: 25px;
+
+            width: 230px;
+
+            background: rgba(13, 17, 22, 0.96);
+            border: 1px solid #303944;
+
+            padding: 18px;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+        }
+
+        .resources-title {
+            font-size: 11px;
+            color: #7f8b98;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+
+            margin-bottom: 16px;
+        }
+
+        .resource {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 11px 0;
+            border-bottom: 1px solid #222a33;
+        }
+
+        .resource:last-child {
+            border-bottom: none;
+        }
+
+        .resource-name {
+            color: #aeb8c4;
+            font-size: 13px;
+        }
+
+        .resource-value {
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        /* CENTER */
+        .center {
+            position: absolute;
+
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+
+            text-align: center;
+
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .status-title {
+            font-size: 25px;
+            font-weight: 900;
+            letter-spacing: 3px;
+
+            margin-bottom: 12px;
+        }
+
+        .status-text {
+            color: #8994a0;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* GOVERNMENT BUTTON */
+        #server-button {
+            display: none;
+
+            margin-top: 28px;
+
+            padding: 15px 32px;
+
+            background: #d9dde1;
+            color: #080b0f;
+
+            border: none;
+
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            cursor: pointer;
+        }
+
+        #server-button:hover {
+            background: #ffffff;
+        }
+
+        /* BOTTOM */
+        .bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            height: 42px;
+
+            border-top: 1px solid #252d36;
+
+            background: rgba(8, 11, 15, 0.97);
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 25px;
+
+            color: #596572;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="top-bar">
+
+        <div class="game-title">
+            WORLD ON EDGE
+        </div>
+
+        <div class="player-info">
+            <div id="player-name">Loading...</div>
+            <div id="player-role">Loading...</div>
+        </div>
+
+    </header>
+
+
+    <!-- RESOURCES -->
+
+    <div class="resources">
+
+        <div class="resources-title">
+            National Resources
+        </div>
+
+        <div class="resource">
+            <span class="resource-name">Punten</span>
+            <span class="resource-value" id="points">0</span>
+        </div>
+
+        <div class="resource">
+            <span class="resource-name">Fabrieken</span>
+            <span class="resource-value" id="factories">0</span>
+        </div>
+
+        <div class="resource">
+            <span class="resource-name">Mankracht</span>
+            <span class="resource-value" id="manpower">0</span>
+        </div>
+
+    </div>
+
+
+    <!-- CENTER -->
+
+    <main class="center">
+
+        <div class="status-title" id="status-title">
+            GEEN SERVER AANGEMAAKT
+        </div>
+
+        <div class="status-text" id="status-text">
+            Wacht op KingJames43
+        </div>
+
+        <button id="server-button">
+            SERVER AANMAKEN
+        </button>
+
+    </main>
+
+
+    <div class="bottom-bar">
+        WORLD ON EDGE • COMMAND CENTER
+    </div>
+
+
+    <script src="game.js"></script>
+
+</body>
+</html>
