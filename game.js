@@ -8,20 +8,24 @@
 // LOGIN CHECK
 // ==========================================
 
-const storedPlayer = sessionStorage.getItem("worldOnEdgePlayer");
+const storedPlayer =
+    sessionStorage.getItem("worldOnEdgePlayer");
 
 
-// Als iemand rechtstreeks naar game.html gaat
-// zonder eerst in te loggen
 if (!storedPlayer) {
 
     window.location.href = "login.html";
 
 } else {
 
-    const player = JSON.parse(storedPlayer);
+    const player =
+        JSON.parse(storedPlayer);
 
-    console.log("Logged in player:", player);
+
+    console.log(
+        "Logged in player:",
+        player
+    );
 
 
     // ==========================================
@@ -55,26 +59,35 @@ if (!storedPlayer) {
     const joinServerButton =
         document.getElementById("join-server-button");
 
+    const countrySelection =
+        document.getElementById("country-selection");
+
+    const closeCountrySelection =
+        document.getElementById("close-country-selection");
+
 
     // ==========================================
     // PLAYER INFO
     // ==========================================
 
-    playerName.textContent = player.username;
+    playerName.textContent =
+        player.username;
+
 
     if (player.role === "government") {
 
-        playerRole.textContent = "Government";
+        playerRole.textContent =
+            "Government";
 
     } else {
 
-        playerRole.textContent = "Player";
-
+        playerRole.textContent =
+            "Player";
     }
 
 
     // ==========================================
-    // START RESOURCES
+    // RESOURCES
     // ==========================================
 
     points.textContent = "0";
@@ -120,28 +133,34 @@ if (!storedPlayer) {
             "click",
             async function () {
 
-                serverButton.disabled = true;
+                serverButton.disabled =
+                    true;
 
                 serverButton.textContent =
                     "SERVER AANMAKEN...";
 
+
                 try {
 
-                    const response = await fetch(
-                        "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/create-server",
-                        {
-                            method: "POST",
+                    const response =
+                        await fetch(
+                            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/create-server",
+                            {
+                                method: "POST",
 
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
 
-                            body: JSON.stringify({
-                                username: player.username,
-                                serverName: "World on Edge"
-                            })
-                        }
-                    );
+                                body: JSON.stringify({
+                                    username:
+                                        player.username,
+
+                                    serverName:
+                                        "World on Edge"
+                                })
+                            }
+                        );
 
 
                     const result =
@@ -174,6 +193,7 @@ if (!storedPlayer) {
                     statusTitle.textContent =
                         "SERVER AANGEMAAKT";
 
+
                     statusText.textContent =
                         "World on Edge is klaar. Spelers kunnen nu deelnemen.";
 
@@ -181,12 +201,10 @@ if (!storedPlayer) {
                     serverButton.textContent =
                         "SERVER AANGEMAAKT";
 
-                    serverButton.disabled = true;
 
+                    serverButton.disabled =
+                        true;
 
-                    // De JOIN SERVER knop wordt
-                    // ook zichtbaar.
-                    // Hij doet voorlopig niets.
 
                     joinServerButton.style.display =
                         "inline-block";
@@ -199,9 +217,11 @@ if (!storedPlayer) {
                         error
                     );
 
+
                     alert(
                         "Er ging iets mis bij het aanmaken van de server."
                     );
+
 
                     serverButton.disabled =
                         false;
@@ -215,16 +235,17 @@ if (!storedPlayer) {
 
 
     // ==========================================
-    // CHECK SERVER
+    // SERVER STATUS
     // ==========================================
 
     async function checkServer() {
 
         try {
 
-            const response = await fetch(
-                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/server-status"
-            );
+            const response =
+                await fetch(
+                    "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/server-status"
+                );
 
 
             const result =
@@ -264,25 +285,14 @@ if (!storedPlayer) {
                     result.server.created_by;
 
 
-                // JOIN SERVER zichtbaar
-                // voor alle accounts.
+                // Iedereen mag JOIN SERVER zien.
 
                 joinServerButton.style.display =
                     "inline-block";
 
 
-                // Voor normale spelers blijft
-                // SERVER AANMAKEN verborgen.
-
-                if (player.role !== "government") {
-
-                    serverButton.style.display =
-                        "none";
-                }
-
-
-                // Voor Government blijft de
-                // bestaande knop zichtbaar.
+                // Government ziet zijn eigen
+                // serverstatus.
 
                 if (player.role === "government") {
 
@@ -294,6 +304,16 @@ if (!storedPlayer) {
 
                     serverButton.disabled =
                         true;
+                }
+
+
+                // Normale spelers krijgen
+                // geen SERVER AANMAKEN.
+
+                else {
+
+                    serverButton.style.display =
+                        "none";
                 }
 
             }
@@ -309,6 +329,10 @@ if (!storedPlayer) {
                     "GEEN SERVER AANGEMAAKT";
 
 
+                joinServerButton.style.display =
+                    "none";
+
+
                 if (player.role === "government") {
 
                     statusText.textContent =
@@ -316,6 +340,12 @@ if (!storedPlayer) {
 
                     serverButton.style.display =
                         "inline-block";
+
+                    serverButton.disabled =
+                        false;
+
+                    serverButton.textContent =
+                        "SERVER AANMAKEN";
 
                 } else {
 
@@ -325,13 +355,6 @@ if (!storedPlayer) {
                     serverButton.style.display =
                         "none";
                 }
-
-
-                // Join knop verbergen zolang
-                // er geen server bestaat.
-
-                joinServerButton.style.display =
-                    "none";
             }
 
 
@@ -352,10 +375,6 @@ if (!storedPlayer) {
     checkServer();
 
 
-    // Controleer iedere 3 seconden opnieuw.
-    // Hierdoor kunnen andere laptops de server
-    // automatisch zien.
-
     setInterval(
         checkServer,
         3000
@@ -365,17 +384,79 @@ if (!storedPlayer) {
     // ==========================================
     // JOIN SERVER
     // ==========================================
-    // VOORLOPIG ALLEEN VISUEEL
-    // ==========================================
 
     joinServerButton.addEventListener(
         "click",
         function () {
 
             console.log(
-                "Join server clicked. Functionality coming later."
+                "Opening country selection..."
             );
 
+
+            countrySelection.style.display =
+                "block";
+        }
+    );
+
+
+    // ==========================================
+    // CLOSE COUNTRY SELECTION
+    // ==========================================
+
+    closeCountrySelection.addEventListener(
+        "click",
+        function () {
+
+            countrySelection.style.display =
+                "none";
+        }
+    );
+
+
+    // ==========================================
+    // COUNTRY SELECTION
+    // ==========================================
+
+    const countryOptions =
+        document.querySelectorAll(
+            ".country-option"
+        );
+
+
+    countryOptions.forEach(
+        function (countryOption) {
+
+            countryOption.addEventListener(
+                "click",
+                function () {
+
+                    const selectedCountry =
+                        this.dataset.country;
+
+
+                    console.log(
+                        "Selected country:",
+                        selectedCountry
+                    );
+
+
+                    // Voorlopig alleen opslaan.
+                    // Later gebruiken we dit op map.html.
+
+                    sessionStorage.setItem(
+                        "worldOnEdgeCountry",
+                        selectedCountry
+                    );
+
+
+                    alert(
+                        "Je hebt gekozen voor: " +
+                        selectedCountry +
+                        "\n\nDe kaart komt in de volgende stap."
+                    );
+                }
+            );
         }
     );
 
