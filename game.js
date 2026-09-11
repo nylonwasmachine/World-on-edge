@@ -67,11 +67,51 @@ if (!storedPlayer) {
 
 
         // De knop doet voorlopig expres niets.
-        serverButton.addEventListener("click", function () {
+serverButton.addEventListener("click", async function () {
+    serverButton.disabled = true;
+    serverButton.textContent = "SERVER AANMAKEN...";
 
-            console.log("Server creation clicked.");
+    try {
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/create-server",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: player.username,
+                    serverName: "World on Edge"
+                })
+            }
+        );
 
-        });
+        const result = await response.json();
+
+        if (!response.ok) {
+            alert(result.error || "Server aanmaken mislukt.");
+            return;
+        }
+
+        console.log("Server created:", result.server);
+
+        statusTitle.textContent = "SERVER AANGEMAAKT";
+        statusText.textContent =
+            "World on Edge is klaar. Spelers kunnen nu deelnemen.";
+
+        serverButton.textContent = "SERVER AANGEMAAKT";
+        serverButton.disabled = true;
+
+    } catch (error) {
+        console.error(error);
+        alert("Er ging iets mis bij het aanmaken van de server.");
+    } finally {
+        if (!serverButton.disabled) {
+            serverButton.textContent = "SERVER AANMAKEN";
+            serverButton.disabled = false;
+        }
+    }
+});
 
     }
 
