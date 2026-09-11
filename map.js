@@ -42,6 +42,13 @@ const map = L.map("world-map", {
     worldCopyJump: false
 }).setView([20, 0], 2);
 
+L.tileLayer(
+    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    {
+        attribution: "&copy; OpenStreetMap &copy; CARTO",
+        maxZoom: 8
+    }
+).addTo(map);
 
 // Geen standaard Leaflet achtergrond.
 // De landen zelf worden onze kaart.
@@ -52,7 +59,7 @@ const map = L.map("world-map", {
 // --------------------------------------------------
 
 const WORLD_MAP_URL =
-    "https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson";
+    "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json";
 
 
 // --------------------------------------------------
@@ -219,10 +226,10 @@ function belongsToPlayer(countryName) {
 function countryStyle(feature) {
 
     const countryName =
-        feature.properties.ADMIN ||
-        feature.properties.name ||
-        feature.properties.NAME ||
-        "";
+    feature.properties.name ||
+    feature.properties.ADMIN ||
+    feature.properties.NAME ||
+    "";
 
     const owned = belongsToPlayer(countryName);
 
@@ -268,11 +275,11 @@ fetch(WORLD_MAP_URL)
 
             onEachFeature: function(feature, layer) {
 
-                const countryName =
-                    feature.properties.ADMIN ||
-                    feature.properties.name ||
-                    feature.properties.NAME ||
-                    "Onbekend";
+             const countryName =
+    feature.properties.name ||
+    feature.properties.ADMIN ||
+    feature.properties.NAME ||
+    "Onbekend";
 
                 layer.bindTooltip(
                     countryName,
