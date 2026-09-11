@@ -144,14 +144,19 @@ async function checkServer() {
         const statusText = document.getElementById("status-text");
         const serverButton = document.getElementById("server-button");
 
-        if (result.server) {
-            statusTitle.textContent = "SERVER BESCHIKBAAR";
+if (result.server) {
+    statusTitle.textContent = "SERVER BESCHIKBAAR";
 
-            statusText.textContent =
-                result.server.server_name +
-                " • Aangemaakt door " +
-                result.server.created_by;
+    statusText.textContent =
+        result.server.server_name +
+        " • Aangemaakt door " +
+        result.server.created_by;
 
+    serverButton.style.display = "inline-block";
+    serverButton.textContent = "JOIN SERVER";
+
+    serverButton.disabled = false;
+}
             if (player.role !== "government") {
                 serverButton.style.display = "none";
             }
