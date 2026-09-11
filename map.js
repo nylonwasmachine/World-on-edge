@@ -1,18 +1,23 @@
-const player = JSON.parse(
-    sessionStorage.getItem("worldOnEdgePlayer")
-);
+// ==================================================
+// WORLD ON EDGE - MAP
+// ==================================================
+
+
+// --------------------------------------------------
+// SPELER
+// --------------------------------------------------
+
+const playerData = sessionStorage.getItem("worldOnEdgePlayer");
 
 const selectedCountry =
     sessionStorage.getItem("worldOnEdgeCountry");
 
 
-// --------------------------------------------------
-// CONTROLEREN OF DE SPELER IS INGELOGD
-// --------------------------------------------------
-
-if (!player) {
+if (!playerData) {
     window.location.href = "login.html";
 }
+
+const player = JSON.parse(playerData);
 
 
 // --------------------------------------------------
@@ -22,57 +27,61 @@ if (!player) {
 document.getElementById("map-country").textContent =
     selectedCountry || "Onbekend";
 
-
-// Voorlopige beginwaarden.
-// Later komen deze uit de game-database.
-
 document.getElementById("map-points").textContent = "0";
 document.getElementById("map-manpower").textContent = "0";
 document.getElementById("map-factories").textContent = "0";
 
 
 // --------------------------------------------------
-// KAART MAKEN
+// KAART
 // --------------------------------------------------
 
-const map = L.map("world-map", {
-    zoomControl: false,
-    minZoom: 2,
-    maxZoom: 8,
-    worldCopyJump: false
-}).setView([20, 0], 2);
+let map;
 
-L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    {
-        attribution: "&copy; OpenStreetMap &copy; CARTO",
-        maxZoom: 8
-    }
-).addTo(map);
+try {
 
-// Geen standaard Leaflet achtergrond.
-// De landen zelf worden onze kaart.
+    map = L.map("world-map", {
+        zoomControl: true,
+        minZoom: 2,
+        maxZoom: 8,
+        worldCopyJump: false
+    }).setView([20, 0], 2);
+
+
+    console.log("Leaflet geladen.");
+
+} catch (error) {
+
+    console.error("Leaflet fout:", error);
+
+    showMapError(
+        "KAARTFOUT",
+        "Leaflet kon niet worden geladen."
+    );
+
+}
 
 
 // --------------------------------------------------
-// LANDEN DATA
+// KAART ACHTERGROND
 // --------------------------------------------------
 
-const WORLD_MAP_URL =
-    "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json";
+if (map) {
+
+    L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 8,
+            attribution: "&copy; OpenStreetMap"
+        }
+    ).addTo(map);
+
+}
 
 
 // --------------------------------------------------
-// GROEPSKAART
+// GAME LANDEN
 // --------------------------------------------------
-//
-// Onze game-landen bestaan uit meerdere echte landen.
-// Daarom koppelen we echte landen later aan onze
-// eigen game-entiteiten.
-//
-// Voor de eerste versie herkennen we al een aantal
-// belangrijke gebieden.
-//
 
 const countryGroups = {
 
@@ -192,11 +201,12 @@ const countryGroups = {
     "Egypte": [
         "Egypt"
     ]
+
 };
 
 
 // --------------------------------------------------
-// CONTROLEREN OF EEN LAND BIJ DE SPELER HOORT
+// CONTROLEREN EIGENAAR
 // --------------------------------------------------
 
 function belongsToPlayer(countryName) {
@@ -205,127 +215,188 @@ function belongsToPlayer(countryName) {
         return false;
     }
 
-    const group = countryGroups[selectedCountry];
+    const group =
+        countryGroups[selectedCountry];
 
     if (!group) {
         return false;
     }
 
-    return group.some(
-        country =>
-            country.toLowerCase() ===
-            countryName.toLowerCase()
+    return group.some(country =>
+        country.toLowerCase() ===
+        countryName.toLowerCase()
     );
+
 }
 
 
 // --------------------------------------------------
-// KLEUREN
+// LAND KLEUR
 // --------------------------------------------------
 
 function countryStyle(feature) {
 
     const countryName =
-    feature.properties.name ||
-    feature.properties.ADMIN ||
-    feature.properties.NAME ||
-    "";
+        feature.properties.name ||
+        feature.properties.ADMIN ||
+        feature.properties.NAME ||
+        "";
 
-    const owned = belongsToPlayer(countryName);
-
-    if (owned) {
+    if (belongsToPlayer(countryName)) {
 
         return {
-            fillColor: "#238636",
+            fillColor: "#20c45a",
             fillOpacity: 0.9,
             color: "#000000",
-            weight: 1.5
+            weight: 2
         };
 
     }
 
     return {
+
         fillColor: "#777777",
-        fillOpacity: 0.75,
+        fillOpacity: 0.8,
         color: "#000000",
         weight: 1
+
     };
+
 }
 
 
 // --------------------------------------------------
-// LANDEN OP DE KAART
+// WERELDKAART
 // --------------------------------------------------
 
-fetch(WORLD_MAP_URL)
-    .then(response => {
+const WORLD_MAP_URL =
+    "https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json";
 
-        if (!response.ok) {
-            throw new Error("Wereldkaart kon niet worden geladen.");
-        }
 
-        return response.json();
+if (map) {
 
-    })
-    .then(data => {
+    fetch(WORLD_MAP_URL)
 
-        L.geoJSON(data, {
+        .then(response => {
 
-            style: countryStyle,
-
-            onEachFeature: function(feature, layer) {
-
-             const countryName =
-    feature.properties.name ||
-    feature.properties.ADMIN ||
-    feature.properties.NAME ||
-    "Onbekend";
-
-                layer.bindTooltip(
-                    countryName,
-                    {
-                        sticky: true
-                    }
+            if (!response.ok) {
+                throw new Error(
+                    "GeoJSON kon niet worden geladen."
                 );
-
-                layer.on({
-                    mouseover: function(e) {
-
-                        e.target.setStyle({
-                            weight: 2.5,
-                            color: "#ffffff"
-                        });
-
-                    },
-
-                    mouseout: function(e) {
-
-                        e.target.setStyle(
-                            countryStyle(feature)
-                        );
-
-                    },
-
-                    click: function() {
-
-                        console.log(
-                            "Gekozen kaartgebied:",
-                            countryName
-                        );
-
-                    }
-                });
-
             }
 
-        }).addTo(map);
+            return response.json();
 
-    })
-    .catch(error => {
+        })
 
-        console.error(error);
+        .then(data => {
 
-        document.getElementById("map-status")
-            .textContent = "KAARTFOUT";
+            console.log(
+                "Wereldkaart geladen:",
+                data.features.length,
+                "landen"
+            );
 
-    });
+
+            L.geoJSON(data, {
+
+                style: countryStyle,
+
+
+                onEachFeature: function(feature, layer) {
+
+                    const countryName =
+                        feature.properties.name ||
+                        feature.properties.ADMIN ||
+                        feature.properties.NAME ||
+                        "Onbekend";
+
+
+                    layer.bindTooltip(
+                        countryName,
+                        {
+                            sticky: true
+                        }
+                    );
+
+
+                    layer.on({
+
+                        mouseover: function(event) {
+
+                            event.target.setStyle({
+                                weight: 3,
+                                color: "#ffffff"
+                            });
+
+                        },
+
+
+                        mouseout: function(event) {
+
+                            event.target.setStyle(
+                                countryStyle(feature)
+                            );
+
+                        },
+
+
+                        click: function() {
+
+                            console.log(
+                                "Gebied aangeklikt:",
+                                countryName
+                            );
+
+                        }
+
+                    });
+
+                }
+
+            }).addTo(map);
+
+
+            document.getElementById("map-status")
+                .textContent = "WERELDKAART";
+
+            document.getElementById("map-error")
+                .style.display = "none";
+
+        })
+
+
+        .catch(error => {
+
+            console.error(
+                "Wereldkaart fout:",
+                error
+            );
+
+            showMapError(
+                "KAARTFOUT",
+                "De wereldkaart kon niet worden geladen."
+            );
+
+        });
+
+}
+
+
+// --------------------------------------------------
+// FOUTMELDING
+// --------------------------------------------------
+
+function showMapError(title, text) {
+
+    const errorBox =
+        document.getElementById("map-error");
+
+    errorBox.style.display = "flex";
+
+    errorBox.innerHTML = `
+        <strong>${title}</strong>
+        <span>${text}</span>
+    `;
+
+}
