@@ -1,1 +1,61 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>World on Edge - Map</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+</head>
+
+<body class="map-page">
+
+    <div id="world-map"></div>
+
+    <!-- HUD -->
+    <div class="map-hud">
+
+        <div class="hud-title">
+            WORLD ON EDGE
+        </div>
+
+        <div class="hud-country">
+            <span>LAND</span>
+            <strong id="map-country">Laden...</strong>
+        </div>
+
+        <div class="hud-stat">
+            <span>⭐ Punten</span>
+            <strong id="map-points">0</strong>
+        </div>
+
+        <div class="hud-stat">
+            <span>👥 Mankracht</span>
+            <strong id="map-manpower">0</strong>
+        </div>
+
+        <div class="hud-stat">
+            <span>🏭 Fabrieken</span>
+            <strong id="map-factories">0</strong>
+        </div>
+
+    </div>
+
+    <!-- Kleine kaartinformatie -->
+    <div class="map-info">
+        <strong id="map-status">WERELDKAART</strong>
+        <span>Jouw gebied is groen</span>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
+
+</body>
+</html>
