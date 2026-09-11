@@ -23,6 +23,7 @@
         }
 
         /* TOP BAR */
+
         .top-bar {
             height: 72px;
             border-bottom: 1px solid #303944;
@@ -58,7 +59,8 @@
             letter-spacing: 1px;
         }
 
-        /* RESOURCE PANEL */
+        /* RESOURCES */
+
         .resources {
             position: absolute;
             top: 92px;
@@ -107,6 +109,7 @@
         }
 
         /* CENTER */
+
         .center {
             position: absolute;
 
@@ -136,6 +139,7 @@
         }
 
         /* BUTTONS */
+
         .game-button {
             margin-top: 28px;
 
@@ -170,7 +174,167 @@
             display: none;
         }
 
+        /* COUNTRY SELECTION OVERLAY */
+
+        #country-selection {
+            display: none;
+
+            position: fixed;
+            inset: 0;
+
+            z-index: 100;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(20, 26, 33, 0.98),
+                    rgba(5, 8, 11, 0.99)
+                );
+
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .country-container {
+            width: 100%;
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+        .country-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .country-header h1 {
+            font-size: 30px;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .country-header p {
+            color: #7f8b98;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .country-region {
+            margin-bottom: 30px;
+        }
+
+        .region-title {
+            color: #7f8b98;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+
+            border-bottom: 1px solid #303944;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+        }
+
+        .country-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(210px, 1fr));
+
+            gap: 10px;
+        }
+
+        .country-option {
+            background: rgba(13, 17, 22, 0.96);
+
+            border: 1px solid #303944;
+
+            padding: 17px;
+
+            color: #ffffff;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition:
+                background 0.15s,
+                border-color 0.15s,
+                transform 0.15s;
+        }
+
+        .country-option:hover {
+            background: #1b222b;
+            border-color: #7f8b98;
+            transform: translateY(-2px);
+        }
+
+        .country-name {
+            display: block;
+
+            font-size: 13px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 7px;
+        }
+
+        .country-capital {
+            display: block;
+
+            color: #7f8b98;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .special-country {
+            border-color: #8c7650;
+        }
+
+        .special-country:hover {
+            border-color: #d0b071;
+        }
+
+        .special-label {
+            display: inline-block;
+
+            margin-top: 9px;
+
+            color: #d0b071;
+
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .country-close {
+            display: block;
+
+            margin: 35px auto 0;
+
+            padding: 12px 25px;
+
+            background: transparent;
+
+            color: #7f8b98;
+
+            border: 1px solid #303944;
+
+            cursor: pointer;
+
+            letter-spacing: 1px;
+        }
+
+        .country-close:hover {
+            color: #ffffff;
+            border-color: #ffffff;
+        }
+
         /* BOTTOM */
+
         .bottom-bar {
             position: absolute;
             bottom: 0;
@@ -251,15 +415,11 @@
             Wacht op KingJames43
         </div>
 
-        <!-- GOVERNMENT: SERVER AANMAKEN -->
-
         <button
             id="server-button"
             class="game-button">
             SERVER AANMAKEN
         </button>
-
-        <!-- PLAYERS: JOIN SERVER -->
 
         <button
             id="join-server-button"
@@ -268,6 +428,551 @@
         </button>
 
     </main>
+
+
+    <!-- COUNTRY SELECTION -->
+
+    <section id="country-selection">
+
+        <div class="country-container">
+
+            <div class="country-header">
+
+                <h1>KIES JE LAND</h1>
+
+                <p>
+                    Kies een rijk, unie, samenwerking of land
+                    om mee te spelen.
+                </p>
+
+            </div>
+
+
+            <!-- EUROPA -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Europa
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option"
+                        data-country="Frankrijk">
+                        <span class="country-name">
+                            Frankrijk
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Parijs
+                        </span>
+                    </button>
+
+                    <button class="country-option special-country"
+                        data-country="Pools-Zwitserse Unie">
+                        <span class="country-name">
+                            Pools-Zwitserse Unie
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Warschau
+                        </span>
+                        <span class="special-label">
+                            Speciale bonus
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Duitsland">
+                        <span class="country-name">
+                            Duitsland
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Berlijn
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Oostenrijk-Hongarije">
+                        <span class="country-name">
+                            Oostenrijk-Hongarije
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Wenen
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Oekraïne">
+                        <span class="country-name">
+                            Oekraïne
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Kyiv
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Rusland">
+                        <span class="country-name">
+                            Rusland
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Moskou
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Zweden">
+                        <span class="country-name">
+                            Zweden
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Stockholm
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Groot-Brittannië">
+                        <span class="country-name">
+                            Groot-Brittannië
+                        </span>
+                        <span class="country-capital">
+                            Met Ierland • Londen
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Servië">
+                        <span class="country-name">
+                            Servië
+                        </span>
+                        <span class="country-capital">
+                            Met Kosovo, Montenegro & Noord-Macedonië
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Groote Türkiye">
+                        <span class="country-name">
+                            Groote Türkiye
+                        </span>
+                        <span class="country-capital">
+                            Ankara
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Roemenië">
+                        <span class="country-name">
+                            Roemenië
+                        </span>
+                        <span class="country-capital">
+                            Met Moldavië • Boekarest
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Iberische Staat">
+                        <span class="country-name">
+                            Iberische Staat
+                        </span>
+                        <span class="country-capital">
+                            Madrid
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Italië">
+                        <span class="country-name">
+                            Italië
+                        </span>
+                        <span class="country-capital">
+                            Rome
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- AZIË -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Azië
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option"
+                        data-country="Indië">
+                        <span class="country-name">
+                            Indië
+                        </span>
+                        <span class="country-capital">
+                            New Delhi
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="China">
+                        <span class="country-name">
+                            China
+                        </span>
+                        <span class="country-capital">
+                            Met Mongolië & Taiwan • Beijing
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="De Stannen">
+                        <span class="country-name">
+                            De Stannen
+                        </span>
+                        <span class="country-capital">
+                            Astana
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Indonesisch Rijk">
+                        <span class="country-name">
+                            Indonesisch Rijk
+                        </span>
+                        <span class="country-capital">
+                            Jakarta
+                        </span>
+                    </button>
+
+                    <button class="country-option special-country"
+                        data-country="Japans-Koreaanse Unie">
+                        <span class="country-name">
+                            Japans-Koreaanse Unie
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Tokyo
+                        </span>
+                        <span class="special-label">
+                            Speciale bonus
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Zuidwest-Azië">
+                        <span class="country-name">
+                            Zuidwest-Azië
+                        </span>
+                        <span class="country-capital">
+                            Bangkok
+                        </span>
+                    </button>
+
+                    <button class="country-option special-country"
+                        data-country="Tajik-Noordse Samenwerking">
+                        <span class="country-name">
+                            Tajik-Noordse Samenwerking
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Oslo
+                        </span>
+                        <span class="special-label">
+                            Speciale bonus
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Oostelijk Midden-Oosten">
+                        <span class="country-name">
+                            Oostelijk Midden-Oosten
+                        </span>
+                        <span class="country-capital">
+                            Riyad
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Westelijk Midden-Oosten">
+                        <span class="country-name">
+                            Westelijk Midden-Oosten
+                        </span>
+                        <span class="country-capital">
+                            Palestina
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- AFRIKA -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Afrika
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option special-country"
+                        data-country="Marokkaanse Rijk">
+                        <span class="country-name">
+                            Marokkaanse Rijk
+                        </span>
+                        <span class="country-capital">
+                            Hoofdstad: Rabat
+                        </span>
+                        <span class="special-label">
+                            Speciale bonus
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Congo">
+                        <span class="country-name">
+                            Congo
+                        </span>
+                        <span class="country-capital">
+                            Kinshasa
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Zuid-Afrikaanse Republiek">
+                        <span class="country-name">
+                            Zuid-Afrikaanse Republiek
+                        </span>
+                        <span class="country-capital">
+                            Pretoria
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Madagascar Rijk">
+                        <span class="country-name">
+                            Madagascar Rijk
+                        </span>
+                        <span class="country-capital">
+                            Antananarivo
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Midden-Afrikaanse Unie">
+                        <span class="country-name">
+                            Midden-Afrikaanse Unie
+                        </span>
+                        <span class="country-capital">
+                            Abuja
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Oostelijk Afrika">
+                        <span class="country-name">
+                            Oostelijk Afrika
+                        </span>
+                        <span class="country-capital">
+                            Nairobi
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Egypte">
+                        <span class="country-name">
+                            Egypte
+                        </span>
+                        <span class="country-capital">
+                            Caïro
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Zuidwestelijk Afrika">
+                        <span class="country-name">
+                            Zuidwestelijk Afrika
+                        </span>
+                        <span class="country-capital">
+                            Dakar
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- NOORD-AMERIKA -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Noord-Amerika
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option"
+                        data-country="Amerika">
+                        <span class="country-name">
+                            Amerika
+                        </span>
+                        <span class="country-capital">
+                            Washington D.C.
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Canada">
+                        <span class="country-name">
+                            Canada
+                        </span>
+                        <span class="country-capital">
+                            Ottawa
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Mexico">
+                        <span class="country-name">
+                            Mexico
+                        </span>
+                        <span class="country-capital">
+                            Mexico-Stad
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Caribisch Gebied">
+                        <span class="country-name">
+                            Caribisch Gebied
+                        </span>
+                        <span class="country-capital">
+                            Caribische eilanden
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Jamaicubaanse Samenwerking">
+                        <span class="country-name">
+                            Jamaicubaanse Samenwerking
+                        </span>
+                        <span class="country-capital">
+                            Havana / Kingston
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Midden-Amerikaanse Unie">
+                        <span class="country-name">
+                            Midden-Amerikaanse Unie
+                        </span>
+                        <span class="country-capital">
+                            Mexico-Stad
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- ZUID-AMERIKA -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Zuid-Amerika
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option"
+                        data-country="Brazilië">
+                        <span class="country-name">
+                            Brazilië
+                        </span>
+                        <span class="country-capital">
+                            Met Paraguay & Uruguay • Brasília
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Argentinië">
+                        <span class="country-name">
+                            Argentinië
+                        </span>
+                        <span class="country-capital">
+                            Buenos Aires
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Chili">
+                        <span class="country-name">
+                            Chili
+                        </span>
+                        <span class="country-capital">
+                            Santiago
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Noordelijk Zuid-Amerika">
+                        <span class="country-name">
+                            Noordelijk Zuid-Amerika
+                        </span>
+                        <span class="country-capital">
+                            Caracas
+                        </span>
+                    </button>
+
+                    <button class="country-option"
+                        data-country="Westelijk Zuid-Amerika">
+                        <span class="country-name">
+                            Westelijk Zuid-Amerika
+                        </span>
+                        <span class="country-capital">
+                            Bogotá
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- OCEANIË -->
+
+            <div class="country-region">
+
+                <div class="region-title">
+                    Oceanië
+                </div>
+
+                <div class="country-grid">
+
+                    <button class="country-option"
+                        data-country="Australië">
+                        <span class="country-name">
+                            Australië
+                        </span>
+                        <span class="country-capital">
+                            Met Nieuw-Zeeland • Canberra
+                        </span>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <button
+                id="close-country-selection"
+                class="country-close">
+                TERUG
+            </button>
+
+        </div>
+
+    </section>
 
 
     <!-- BOTTOM -->
