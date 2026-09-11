@@ -424,40 +424,27 @@ if (!storedPlayer) {
         );
 
 
-    countryOptions.forEach(
-        function (countryOption) {
+  countryOptions.forEach(option => {
 
-            countryOption.addEventListener(
-                "click",
-                function () {
+    option.addEventListener("click", () => {
 
-                    const selectedCountry =
-                        this.dataset.country;
+        const country = option.dataset.country;
 
+        // Land opslaan
+        sessionStorage.setItem(
+            "worldOnEdgeCountry",
+            country
+        );
 
-                    console.log(
-                        "Selected country:",
-                        selectedCountry
-                    );
+        console.log(
+            "Land geselecteerd:",
+            country
+        );
 
+        // Naar de wereldkaart
+        window.location.href = "map.html";
 
-                    // Voorlopig alleen opslaan.
-                    // Later gebruiken we dit op map.html.
+    });
 
-                    sessionStorage.setItem(
-                        "worldOnEdgeCountry",
-                        selectedCountry
-                    );
-
-
-                    alert(
-                        "Je hebt gekozen voor: " +
-                        selectedCountry +
-                        "\n\nDe kaart komt in de volgende stap."
-                    );
-                }
-            );
-        }
-    );
-
+});
 }
