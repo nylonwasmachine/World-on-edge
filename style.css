@@ -164,177 +164,8 @@ footer {
     font-size: 6px;
   }
 }
-
 /* ==================================================
-   WORLD MAP
-   ================================================== */
-  /* ==================================================
-   WORLD MAP
-   ================================================== */
-
-.map-page {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background: #111111;
-    font-family: Arial, sans-serif;
-}
-
-#world-map {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #202020;
-}
-
-
-/* ==================================================
-   MAP HUD
-   ================================================== */
-
-.map-hud {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-
-    width: 230px;
-
-    padding: 16px;
-
-    background: rgba(10, 10, 10, 0.92);
-
-    border: 1px solid #555;
-    border-left: 4px solid #238636;
-
-    color: white;
-
-    z-index: 1000;
-
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.hud-title {
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 2px;
-
-    margin-bottom: 15px;
-
-    color: #ffffff;
-}
-
-.hud-country {
-    display: flex;
-    flex-direction: column;
-
-    padding-bottom: 12px;
-    margin-bottom: 12px;
-
-    border-bottom: 1px solid #444;
-}
-
-.hud-country span {
-    font-size: 10px;
-    color: #999;
-
-    letter-spacing: 1px;
-}
-
-.hud-country strong {
-    margin-top: 4px;
-
-    font-size: 17px;
-
-    color: #4ade80;
-}
-
-.hud-stat {
-    display: flex;
-    justify-content: space-between;
-
-    padding: 7px 0;
-
-    font-size: 14px;
-}
-
-.hud-stat strong {
-    color: #ffffff;
-}
-
-
-/* ==================================================
-   MAP INFO
-   ================================================== */
-
-.map-info {
-    position: fixed;
-
-    right: 20px;
-    bottom: 20px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 4px;
-
-    padding: 12px 16px;
-
-    background: rgba(10, 10, 10, 0.9);
-
-    border: 1px solid #555;
-
-    color: #aaa;
-
-    z-index: 1000;
-
-    font-size: 12px;
-}
-
-.map-info strong {
-    color: white;
-
-    font-size: 13px;
-
-    letter-spacing: 1px;
-}
-
-
-/* ==================================================
-   LEAFLET AANPASSINGEN
-   ================================================== */
-
-.leaflet-control-zoom {
-    margin-right: 15px !important;
-    margin-top: 15px !important;
-}
-
-.leaflet-control-zoom a {
-    background: #111 !important;
-    color: white !important;
-
-    border-color: #444 !important;
-}
-
-.leaflet-control-zoom a:hover {
-    background: #222 !important;
-}
-
-.leaflet-tooltip {
-    background: #111;
-    border: 1px solid #555;
-
-    color: white;
-
-    box-shadow: none;
-}
-
-.leaflet-tooltip::before {
-    border-top-color: #555;
-}
-  /* ==================================================
-   WORLD ON EDGE MAP
+   WORLD ON EDGE - MAP
    ================================================== */
 
 .map-page {
@@ -342,12 +173,12 @@ footer {
     padding: 0;
     overflow: hidden;
     background: #222;
+    font-family: Arial, sans-serif;
 }
 
 #world-map {
     position: fixed;
-    left: 0;
-    top: 0;
+    inset: 0;
 
     width: 100vw;
     height: 100vh;
@@ -358,7 +189,9 @@ footer {
 }
 
 
-/* MAP HUD */
+/* ==================================================
+   MAP HUD
+   ================================================== */
 
 .map-hud {
     position: fixed;
@@ -367,7 +200,6 @@ footer {
     left: 20px;
 
     width: 230px;
-
     padding: 16px;
 
     background: rgba(10, 10, 10, 0.94);
@@ -386,7 +218,6 @@ footer {
 .hud-title {
     font-size: 18px;
     font-weight: bold;
-
     letter-spacing: 2px;
 
     margin-bottom: 15px;
@@ -411,7 +242,6 @@ footer {
     margin-top: 4px;
 
     font-size: 17px;
-
     color: #20c45a;
 }
 
@@ -424,12 +254,10 @@ footer {
     font-size: 14px;
 }
 
-.hud-stat strong {
-    color: white;
-}
 
-
-/* KAART INFO */
+/* ==================================================
+   MAP INFO
+   ================================================== */
 
 .map-info {
     position: fixed;
@@ -459,7 +287,9 @@ footer {
 }
 
 
-/* KAART FOUT */
+/* ==================================================
+   MAP ERROR
+   ================================================== */
 
 #map-error {
     position: fixed;
@@ -489,7 +319,6 @@ footer {
 
 #map-error strong {
     color: #20c45a;
-
     font-size: 18px;
 }
 
@@ -498,17 +327,27 @@ footer {
 }
 
 
-/* LEAFLET */
+/* ==================================================
+   LEAFLET
+   ================================================== */
 
 .leaflet-container {
     background: #333 !important;
 }
 
+.leaflet-control-zoom {
+    margin-right: 15px !important;
+    margin-top: 15px !important;
+}
+
 .leaflet-control-zoom a {
     background: #111 !important;
     color: white !important;
-
     border-color: #444 !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: #222 !important;
 }
 
 .leaflet-tooltip {
@@ -520,4 +359,5 @@ footer {
 
     box-shadow: none;
 }
+
 }
