@@ -71,7 +71,7 @@
 
             padding: 18px;
 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
         }
 
         .resources-title {
@@ -135,10 +135,8 @@
             letter-spacing: 1px;
         }
 
-        /* GOVERNMENT BUTTON */
-        #server-button {
-            display: none;
-
+        /* BUTTONS */
+        .game-button {
             margin-top: 28px;
 
             padding: 15px 32px;
@@ -155,8 +153,21 @@
             cursor: pointer;
         }
 
-        #server-button:hover {
+        .game-button:hover {
             background: #ffffff;
+        }
+
+        .game-button:disabled {
+            opacity: 0.65;
+            cursor: default;
+        }
+
+        #server-button {
+            display: none;
+        }
+
+        #join-server-button {
+            display: none;
         }
 
         /* BOTTOM */
@@ -185,6 +196,8 @@
 </head>
 
 <body>
+
+    <!-- TOP BAR -->
 
     <header class="top-bar">
 
@@ -238,12 +251,26 @@
             Wacht op KingJames43
         </div>
 
-        <button id="server-button">
+        <!-- GOVERNMENT: SERVER AANMAKEN -->
+
+        <button
+            id="server-button"
+            class="game-button">
             SERVER AANMAKEN
+        </button>
+
+        <!-- PLAYERS: JOIN SERVER -->
+
+        <button
+            id="join-server-button"
+            class="game-button">
+            JOIN SERVER
         </button>
 
     </main>
 
+
+    <!-- BOTTOM -->
 
     <div class="bottom-bar">
         WORLD ON EDGE • COMMAND CENTER
