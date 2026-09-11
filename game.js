@@ -127,5 +127,47 @@ serverButton.addEventListener("click", async function () {
         serverButton.style.display = "none";
 
     }
+async function checkServer() {
+    try {
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/server-status"
+        );
 
+        const result = await response.json();
+
+        if (!response.ok) {
+            console.error("Server check failed:", result);
+            return;
+        }
+
+        const statusTitle = document.getElementById("status-title");
+        const statusText = document.getElementById("status-text");
+        const serverButton = document.getElementById("server-button");
+
+        if (result.server) {
+            statusTitle.textContent = "SERVER BESCHIKBAAR";
+
+            statusText.textContent =
+                result.server.server_name +
+                " • Aangemaakt door " +
+                result.server.created_by;
+
+            if (player.role !== "government") {
+                serverButton.style.display = "none";
+            }
+        } else {
+            statusTitle.textContent = "GEEN SERVER AANGEMAAKT";
+
+            if (player.role !== "government") {
+                statusText.textContent = "Wacht op KingJames43";
+            }
+        }
+
+    } catch (error) {
+        console.error("Could not check server:", error);
+    }
+}
+
+checkServer();
+setInterval(checkServer, 3000);
 }
