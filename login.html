@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>World on Edge — Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(5, 8, 12, 0.82), rgba(5, 8, 12, 0.94)),
+                #080b0f;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 430px;
+            padding: 45px 35px;
+            background: rgba(15, 19, 25, 0.95);
+            border: 1px solid #303944;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.65);
+        }
+
+        .title {
+            text-align: center;
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #8d98a5;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aeb8c4;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+
+            background: #0b0f14;
+            color: white;
+
+            border: 1px solid #343e4a;
+            outline: none;
+
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color: #778493;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+
+            background: #d9dde1;
+            color: #080b0f;
+
+            border: none;
+            cursor: pointer;
+
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: white;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #message {
+            min-height: 20px;
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: #d86b6b;
+        }
+
+        .back {
+            display: block;
+            margin-top: 25px;
+            text-align: center;
+            color: #737f8c;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back:hover {
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="title">
+            WORLD ON EDGE
+        </div>
+
+        <div class="subtitle">
+            COMMANDER LOGIN
+        </div>
+
+        <form id="loginForm">
+
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" id="loginButton">
+                LOGIN
+            </button>
+
+        </form>
+
+        <div id="message"></div>
+
+        <a href="index.html" class="back">
+            ← BACK TO HOME
+        </a>
+
+    </div>
+
+    <script>
+
+        const SUPABASE_URL = "JOUW_SUPABASE_URL";
+        const LOGIN_FUNCTION_URL = SUPABASE_URL + "/functions/v1/login";
+
+        const form = document.getElementById("loginForm");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const button = document.getElementById("loginButton");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            message.textContent = "";
+            button.disabled = true;
+            button.textContent = "LOGGING IN...";
+
+            try {
+
+                const response = await fetch(LOGIN_FUNCTION_URL, {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    message.textContent =
+                        result.error || "Login failed.";
+
+                    return;
+                }
+
+                // Logingegevens tijdelijk bewaren
+                sessionStorage.setItem(
+                    "worldOnEdgePlayer",
+                    JSON.stringify(result.player)
+                );
+
+                // Voorlopig naar de gamepagina
+                window.location.href = "game.html";
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Unable to connect to the server.";
+
+            } finally {
+
+                button.disabled = false;
+                button.textContent = "LOGIN";
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
