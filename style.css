@@ -1,1 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&display=swap');
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, #142019 0%, #050807 45%, #020303 100%);
+  color: #e8f0ed;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.grid {
+  position: fixed;
+  inset: 0;
+  opacity: .12;
+
+  background-image:
+    linear-gradient(rgba(180,255,70,.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180,255,70,.2) 1px, transparent 1px);
+
+  background-size: 55px 55px;
+}
+
+main {
+  position: relative;
+  z-index: 2;
+
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+}
+
+.status {
+  position: absolute;
+  top: 30px;
+
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: #7e8a85;
+}
+
+.status:first-letter {
+  color: #d6ff4b;
+}
+
+.classified {
+  color: #d6ff4b;
+  font-size: 11px;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: clamp(55px, 9vw, 120px);
+  line-height: .9;
+  letter-spacing: 7px;
+  font-weight: 800;
+}
+
+h1 span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1px #e8f0ed;
+}
+
+.line {
+  width: min(550px, 75vw);
+  height: 1px;
+  margin: 30px auto 20px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #d6ff4b,
+    transparent
+  );
+}
+
+.subtitle {
+  color: #9da9a5;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+button {
+  margin-top: 55px;
+
+  width: 360px;
+  max-width: 80vw;
+  height: 62px;
+
+  border: 1px solid #d6ff4b;
+  background: rgba(214,255,75,.05);
+
+  color: white;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+button span {
+  margin-left: 30px;
+  font-size: 20px;
+}
+
+button:hover {
+  background: #d6ff4b;
+  color: #071007;
+
+  box-shadow: 0 0 35px rgba(214,255,75,.25);
+}
+
+.hint {
+  margin-top: 14px;
+
+  color: #56615d;
+  font-size: 8px;
+  letter-spacing: 3px;
+}
+
+footer {
+  position: fixed;
+  bottom: 25px;
+  left: 35px;
+  right: 35px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #4d5854;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+@media (max-width: 700px) {
+  h1 {
+    letter-spacing: 3px;
+  }
+
+  .subtitle {
+    line-height: 2;
+    letter-spacing: 2px;
+  }
+
+  footer {
+    left: 15px;
+    right: 15px;
+    font-size: 6px;
+  }
+}
