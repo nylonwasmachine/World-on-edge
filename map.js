@@ -43,39 +43,37 @@ const countryGroups = {
     // EUROPA
     // ==============================
 
-    "Frankrijk": [
-        "France",
-        "Belgium",
-        "Netherlands",
-        "Luxembourg"
-    ],
+   "Frankrijk": [
+    "France",
+    "Belgium",
+    "Netherlands",
+    "Luxembourg"
+],
 
-    "Pools-Zwitserse Samenwerking": [
-        "Poland",
-        "Switzerland",
-        "Belarus",
-        "Finland",
-        "Estonia",
-        "Latvia",
-        "Lithuania",
-        "Kaliningrad"
-    ],
+  "Pools-Zwitserse Unie": [
+    "Poland",
+    "Switzerland",
+    "Belarus",
+    "Finland",
+    "Estonia",
+    "Latvia",
+    "Lithuania"
+],
 
     "Duitsland": [
         "Germany"
     ],
 
-    "Oostenrijk-Hongarije": [
-        "Austria",
-        "Hungary",
-        "Slovenia",
-        "Croatia",
-        "Bosnia and Herzegovina",
-        "Slovakia",
-        "Czech Republic",
-        "Czechia"
-    ],
-
+"Oostenrijk-Hongarije": [
+    "Austria",
+    "Hungary",
+    "Slovenia",
+    "Croatia",
+    "Bosnia and Herzegovina",
+    "Slovakia",
+    "Czech Republic"
+],
+    
     "Oekraïne": [
         "Ukraine"
     ],
@@ -93,12 +91,12 @@ const countryGroups = {
         "Ireland"
     ],
 
-    "Servië": [
-        "Serbia",
-        "Kosovo",
-        "Montenegro",
-        "North Macedonia"
-    ],
+  "Servië": [
+    "Republic of Serbia",
+    "Kosovo",
+    "Montenegro",
+    "Macedonia"
+],
 
     "Groote Türkiye": [
         "Turkey",
@@ -203,14 +201,14 @@ const countryGroups = {
     // AFRIKA
     // ==============================
 
-    "Marokkaanse Rijk": [
-        "Morocco",
-        "Western Sahara",
-        "Algeria",
-        "Mali",
-        "Mauritania",
-        "Tunisia"
-    ],
+  "Marokkaanse Rijk": [
+    "Morocco",
+    "Western Sahara",
+    "Algeria",
+    "Mali",
+    "Mauritania",
+    "Tunisia"
+],
 
     "Congo": [
         "Republic of the Congo",
@@ -240,18 +238,17 @@ const countryGroups = {
         "Antarctica"
     ],
 
-    "Midden-Afrikaanse Unie": [
-        "Central African Republic",
-        "Niger",
-        "Nigeria",
-        "Sudan",
-        "South Sudan",
-        "Libya",
-        "Chad",
-        "Cameroon",
-        "Uganda"
-    ],
-
+  "Midden-Afrikaanse Unie": [
+    "Central African Republic",
+    "Niger",
+    "Nigeria",
+    "Sudan",
+    "South Sudan",
+    "Libya",
+    "Chad",
+    "Cameroon",
+    "Uganda"
+],
     "Oostelijk Afrika": [
         "Somalia",
         "Kenya",
@@ -301,37 +298,35 @@ const countryGroups = {
         "Mexico"
     ],
 
-    "Caribisch Gebied": [
-        "Bahamas",
-        "The Bahamas",
-        "Barbados",
-        "Grenada",
-        "Dominica",
-        "Saint Lucia",
-        "Antigua and Barbuda",
-        "Saint Kitts and Nevis",
-        "Saint Vincent and the Grenadines",
-        "Trinidad and Tobago",
-        "Puerto Rico",
-        "Dominican Republic",
-        "Haiti"
-    ],
+   "Caribisch Gebied": [
+    "The Bahamas",
+    "Barbados",
+    "Grenada",
+    "Dominica",
+    "Saint Lucia",
+    "Antigua and Barbuda",
+    "Saint Kitts and Nevis",
+    "Saint Vincent and the Grenadines",
+    "Trinidad and Tobago",
+    "Puerto Rico",
+    "Dominican Republic",
+    "Haiti"
+],
 
     "Jamaicubaanse Samenwerking": [
         "Jamaica",
         "Cuba"
     ],
 
-    "Midden-Amerikaanse Unie": [
-        "Guatemala",
-        "Belize",
-        "El Salvador",
-        "Honduras",
-        "Nicaragua",
-        "Costa Rica",
-        "Panama"
-    ],
-
+  "Midden-Amerikaanse Unie": [
+    "Guatemala",
+    "Belize",
+    "El Salvador",
+    "Honduras",
+    "Nicaragua",
+    "Costa Rica",
+    "Panama"
+],
 
     // ==============================
     // ZUID-AMERIKA
@@ -351,18 +346,16 @@ const countryGroups = {
         "Chile"
     ],
 
-    "Noordelijk-Zuid-Amerika": [
-        "Suriname",
-        "Guyana",
-        "Venezuela"
-    ],
-
+  "Noordelijk-Zuid-Amerika": [
+    "Suriname",
+    "Guyana",
+    "Venezuela"
+],
     "West-Zuid-Amerika": [
-        "Colombia",
-        "Peru",
-        "Ecuador"
-    ],
-
+    "Colombia",
+    "Peru",
+    "Ecuador"
+],
 
     // ==============================
     // OCEANIË
