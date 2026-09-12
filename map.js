@@ -419,8 +419,7 @@ function belongsToPlayer(countryName) {
         normalizeCountryName(countryName);
 
     return group.some(country =>
-        normalizeCountryName(country) ===
-        normalizedName
+        normalizeCountryName(country) === normalizedName
     );
 }
 
