@@ -347,12 +347,13 @@ const countryGroups = {
     "Guyana",
     "Venezuela"
 ],
-    
-  "West-Zuid-Amerika": [
+
+"West-Zuid-Amerika": [
     "Colombia",
     "Peru",
     "Ecuador"
 ],
+    
     // ==============================
     // OCEANIË
     // ==============================
