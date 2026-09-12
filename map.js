@@ -2,16 +2,15 @@
 // WORLD ON EDGE - MAP
 // ==================================================
 
-
 // --------------------------------------------------
 // SPELER
 // --------------------------------------------------
 
-const playerData = sessionStorage.getItem("worldOnEdgePlayer");
+const playerData =
+    sessionStorage.getItem("worldOnEdgePlayer");
 
 const selectedCountry =
     sessionStorage.getItem("worldOnEdgeCountry");
-
 
 if (!playerData) {
     window.location.href = "login.html";
@@ -33,60 +32,28 @@ document.getElementById("map-factories").textContent = "0";
 
 
 // --------------------------------------------------
-// KAART
-// --------------------------------------------------
-
-let map;
-
-try {
-
-    map = L.map("world-map", {
-        zoomControl: true,
-        minZoom: 2,
-        maxZoom: 8,
-        worldCopyJump: false
-    }).setView([20, 0], 2);
-
-
-    console.log("Leaflet geladen.");
-
-} catch (error) {
-
-    console.error("Leaflet fout:", error);
-
-    showMapError(
-        "KAARTFOUT",
-        "Leaflet kon niet worden geladen."
-    );
-
-}
-
-
-// --------------------------------------------------
-// KAART ACHTERGROND
-// --------------------------------------------------
-
-if (map) {
-
-    L.tileLayer(
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            maxZoom: 8,
-            attribution: "&copy; OpenStreetMap"
-        }
-    ).addTo(map);
-
-}
-
-
-// --------------------------------------------------
-// GAME LANDEN
+// LANDENGROEPEN
 // --------------------------------------------------
 
 const countryGroups = {
 
+    // ==============================
+    // EUROPA
+    // ==============================
+
     "Frankrijk": [
         "France"
+    ],
+
+    "Pools-Zwitserse Samenwerking": [
+        "Poland",
+        "Switzerland",
+        "Belarus",
+        "Finland",
+        "Estonia",
+        "Latvia",
+        "Lithuania",
+        "Kaliningrad"
     ],
 
     "Duitsland": [
@@ -122,6 +89,16 @@ const countryGroups = {
         "North Macedonia"
     ],
 
+    "Groote Türkiye": [
+        "Turkey",
+        "Greece",
+        "Albania",
+        "Bulgaria",
+        "Georgia",
+        "Armenia",
+        "Azerbaijan"
+    ],
+
     "Roemenië": [
         "Romania",
         "Moldova"
@@ -135,6 +112,11 @@ const countryGroups = {
     "Italië": [
         "Italy"
     ],
+
+
+    // ==============================
+    // AZIË
+    // ==============================
 
     "Indië": [
         "India",
@@ -151,10 +133,11 @@ const countryGroups = {
         "Taiwan"
     ],
 
-    "Japanse-Koreaanse Unie": [
-        "Japan",
-        "North Korea",
-        "South Korea"
+    "De Stannen": [
+        "Kazakhstan",
+        "Kyrgyzstan",
+        "Turkmenistan",
+        "Uzbekistan"
     ],
 
     "Indonesisch Rijk": [
@@ -162,22 +145,176 @@ const countryGroups = {
         "Malaysia",
         "Brunei",
         "Singapore",
-        "Philippines",
-        "Papua New Guinea"
+        "Papua New Guinea",
+        "Philippines"
     ],
 
-    "Canada": [
-        "Canada"
+    "Japans-Koreaanse Unie": [
+        "Japan",
+        "North Korea",
+        "South Korea",
+        "Denmark"
     ],
+
+    "Zuidwest-Azië": [
+        "Thailand",
+        "Vietnam",
+        "Myanmar",
+        "Cambodia",
+        "Laos"
+    ],
+
+    "Tajik-Noordse Samenwerking": [
+        "Tajikistan",
+        "Norway",
+        "Iceland"
+    ],
+
+    "Oostelijk Midden-Oosten": [
+        "Saudi Arabia",
+        "Iran",
+        "Iraq",
+        "Yemen",
+        "Oman",
+        "Qatar",
+        "United Arab Emirates"
+    ],
+
+    "Westelijk Midden-Oosten": [
+        "Palestine",
+        "Syria",
+        "Jordan",
+        "Lebanon"
+    ],
+
+
+    // ==============================
+    // AFRIKA
+    // ==============================
+
+    "Marokkaanse Rijk": [
+        "Morocco",
+        "Algeria",
+        "Mali",
+        "Mauritania",
+        "Tunisia"
+    ],
+
+    "Congo": [
+        "Republic of the Congo",
+        "Democratic Republic of the Congo",
+        "Gabon",
+        "Equatorial Guinea",
+        "Burundi",
+        "Rwanda"
+    ],
+
+    "Zuid-Afrikaanse Republiek": [
+        "South Africa",
+        "Lesotho",
+        "Angola",
+        "Namibia",
+        "Botswana",
+        "Zambia",
+        "Zimbabwe",
+        "Mozambique",
+        "Eswatini",
+        "Swaziland",
+        "Malawi"
+    ],
+
+    "Madagascar Rijk": [
+        "Madagascar",
+        "Antarctica"
+    ],
+
+    "Midden-Afrikaanse Unie": [
+        "Central African Republic",
+        "Niger",
+        "Nigeria",
+        "Sudan",
+        "Libya",
+        "Uganda"
+    ],
+
+    "Oostelijk Afrika": [
+        "Somalia",
+        "Kenya",
+        "Ethiopia",
+        "Djibouti",
+        "Eritrea"
+    ],
+
+    "Egypte": [
+        "Egypt"
+    ],
+
+    "Zuidwestelijk Afrika": [
+        "Senegal",
+        "Guinea",
+        "Ivory Coast",
+        "Burkina Faso",
+        "Benin",
+        "Togo",
+        "Ghana",
+        "Liberia",
+        "Sierra Leone",
+        "Gambia",
+        "Guinea-Bissau"
+    ],
+
+
+    // ==============================
+    // NOORD-AMERIKA
+    // ==============================
 
     "Amerika": [
         "United States of America",
         "United States"
     ],
 
+    "Canada": [
+        "Canada"
+    ],
+
     "Mexico": [
         "Mexico"
     ],
+
+    "Caribisch Gebied": [
+        "Bahamas",
+        "Barbados",
+        "Dominica",
+        "Dominican Republic",
+        "Haiti",
+        "Saint Lucia",
+        "Saint Vincent and the Grenadines",
+        "Grenada",
+        "Trinidad and Tobago",
+        "Antigua and Barbuda",
+        "Saint Kitts and Nevis"
+    ],
+
+    "Jamaicubaanse Samenwerking": [
+        "Jamaica",
+        "Cuba"
+    ],
+
+    "Midden-Amerikaanse Unie": [
+        "Mexico",
+        "Guatemala",
+        "Belize",
+        "El Salvador",
+        "Honduras",
+        "Nicaragua",
+        "Costa Rica",
+        "Panama"
+    ],
+
+
+    // ==============================
+    // ZUID-AMERIKA
+    // ==============================
 
     "Brazilië": [
         "Brazil",
@@ -193,20 +330,51 @@ const countryGroups = {
         "Chile"
     ],
 
+    "Noordelijk-Zuid-Amerika": [
+        "Guyana",
+        "Suriname",
+        "Venezuela"
+    ],
+
+    "West-Zuid-Amerika": [
+        "Peru",
+        "Ecuador",
+        "Colombia"
+    ],
+
+
+    // ==============================
+    // OCEANIË
+    // ==============================
+
     "Australië": [
         "Australia",
         "New Zealand"
-    ],
-
-    "Egypte": [
-        "Egypt"
     ]
-
 };
 
 
 // --------------------------------------------------
-// CONTROLEREN EIGENAAR
+// NAMEN NORMALISEREN
+// --------------------------------------------------
+
+function normalizeCountryName(name) {
+
+    if (!name) {
+        return "";
+    }
+
+    return name
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ");
+}
+
+
+// --------------------------------------------------
+// CONTROLEREN OF LAND BIJ SPELER HOORT
 // --------------------------------------------------
 
 function belongsToPlayer(countryName) {
@@ -219,54 +387,147 @@ function belongsToPlayer(countryName) {
         countryGroups[selectedCountry];
 
     if (!group) {
+        console.warn(
+            "Geen landengroep gevonden voor:",
+            selectedCountry
+        );
+
         return false;
     }
 
-    return group.some(country =>
-        country.toLowerCase() ===
-        countryName.toLowerCase()
-    );
+    const normalizedName =
+        normalizeCountryName(countryName);
 
+    return group.some(country =>
+        normalizeCountryName(country) ===
+        normalizedName
+    );
 }
 
 
 // --------------------------------------------------
-// LAND KLEUR
+// LANDNAAM UIT GEOJSON HALEN
+// --------------------------------------------------
+
+function getCountryName(feature) {
+
+    const properties =
+        feature.properties || {};
+
+    return (
+        properties.name ||
+        properties.ADMIN ||
+        properties.NAME ||
+        properties.admin ||
+        properties.sovereignt ||
+        ""
+    );
+}
+
+
+// --------------------------------------------------
+// LAND STIJL
 // --------------------------------------------------
 
 function countryStyle(feature) {
 
     const countryName =
-        feature.properties.name ||
-        feature.properties.ADMIN ||
-        feature.properties.NAME ||
-        "";
+        getCountryName(feature);
 
-    if (belongsToPlayer(countryName)) {
+    const owned =
+        belongsToPlayer(countryName);
+
+    if (owned) {
 
         return {
             fillColor: "#20c45a",
             fillOpacity: 0.9,
-            color: "#000000",
-            weight: 2
-        };
 
+            color: "#000000",
+            weight: 1.5,
+
+            opacity: 1
+        };
     }
 
     return {
 
-        fillColor: "#777777",
-        fillOpacity: 0.8,
+        fillColor: "#686868",
+        fillOpacity: 0.85,
+
         color: "#000000",
-        weight: 1
+        weight: 1,
 
+        opacity: 1
     };
-
 }
 
 
 // --------------------------------------------------
-// WERELDKAART
+// KAART MAKEN
+// --------------------------------------------------
+
+let map;
+
+try {
+
+    map = L.map("world-map", {
+
+        zoomControl: true,
+
+        minZoom: 2,
+
+        maxZoom: 8,
+
+        worldCopyJump: false,
+
+        maxBounds: [
+            [-90, -180],
+            [90, 180]
+        ],
+
+        maxBoundsViscosity: 1.0
+
+    }).setView([20, 0], 2);
+
+    console.log("Leaflet geladen.");
+
+} catch (error) {
+
+    console.error(
+        "Leaflet fout:",
+        error
+    );
+
+    showMapError(
+        "KAARTFOUT",
+        "Leaflet kon niet worden geladen."
+    );
+}
+
+
+// --------------------------------------------------
+// ACHTERGROND
+// --------------------------------------------------
+
+if (map) {
+
+    L.tileLayer(
+        "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            maxZoom: 8,
+
+            noWrap: true,
+
+            attribution:
+                "&copy; OpenStreetMap"
+        }
+    ).addTo(map);
+}
+
+
+// --------------------------------------------------
+// GEOJSON
 // --------------------------------------------------
 
 const WORLD_MAP_URL =
@@ -280,13 +541,13 @@ if (map) {
         .then(response => {
 
             if (!response.ok) {
+
                 throw new Error(
                     "GeoJSON kon niet worden geladen."
                 );
             }
 
             return response.json();
-
         })
 
         .then(data => {
@@ -303,65 +564,80 @@ if (map) {
                 style: countryStyle,
 
 
-                onEachFeature: function(feature, layer) {
+                onEachFeature:
+                    function(feature, layer) {
 
-                    const countryName =
-                        feature.properties.name ||
-                        feature.properties.ADMIN ||
-                        feature.properties.NAME ||
-                        "Onbekend";
+                        const countryName =
+                            getCountryName(feature);
 
 
-                    layer.bindTooltip(
-                        countryName,
-                        {
-                            sticky: true
-                        }
-                    );
+                        layer.bindTooltip(
+                            countryName || "Onbekend",
+                            {
+                                sticky: true
+                            }
+                        );
 
 
-                    layer.on({
+                        layer.on({
 
-                        mouseover: function(event) {
+                            mouseover:
+                                function(event) {
 
-                            event.target.setStyle({
-                                weight: 3,
-                                color: "#ffffff"
-                            });
+                                    event.target.setStyle({
 
-                        },
+                                        weight: 2,
 
+                                        color: "#ffffff",
 
-                        mouseout: function(event) {
+                                        fillOpacity: 0.95
+                                    });
 
-                            event.target.setStyle(
-                                countryStyle(feature)
-                            );
-
-                        },
+                                    event.target.bringToFront();
+                                },
 
 
-                        click: function() {
+                            mouseout:
+                                function(event) {
 
-                            console.log(
-                                "Gebied aangeklikt:",
-                                countryName
-                            );
+                                    event.target.setStyle(
+                                        countryStyle(feature)
+                                    );
+                                },
 
-                        }
 
-                    });
+                            click:
+                                function() {
 
-                }
+                                    console.log(
+                                        "Gebied aangeklikt:",
+                                        countryName
+                                    );
+                                }
+
+                        });
+                    }
 
             }).addTo(map);
 
 
-            document.getElementById("map-status")
-                .textContent = "WERELDKAART";
+            // Zorg dat de wereld één keer netjes in beeld komt
+            map.setView(
+                [20, 0],
+                2
+            );
 
-            document.getElementById("map-error")
-                .style.display = "none";
+
+            document.getElementById(
+                "map-status"
+            ).textContent =
+                "WERELDKAART";
+
+
+            document.getElementById(
+                "map-error"
+            ).style.display =
+                "none";
 
         })
 
@@ -377,9 +653,7 @@ if (map) {
                 "KAARTFOUT",
                 "De wereldkaart kon niet worden geladen."
             );
-
         });
-
 }
 
 
@@ -392,11 +666,11 @@ function showMapError(title, text) {
     const errorBox =
         document.getElementById("map-error");
 
-    errorBox.style.display = "flex";
+    errorBox.style.display =
+        "flex";
 
     errorBox.innerHTML = `
         <strong>${title}</strong>
         <span>${text}</span>
     `;
-
 }
