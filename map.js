@@ -246,39 +246,35 @@ const countryGroups = {
     "South Sudan",
     "Libya",
     "Chad",
-    "Cameroon",
+    "Cameroon"
+],
+    
+  "Oostelijk Afrika": [
+    "Somalia",
+    "Kenya",
+    "Ethiopia",
+    "Djibouti",
+    "Eritrea",
     "Uganda"
 ],
-    "Oostelijk Afrika": [
-        "Somalia",
-        "Kenya",
-        "Ethiopia",
-        "Djibouti",
-        "Eritrea"
-    ],
 
     "Egypte": [
         "Egypt"
     ],
 
-    "Zuidwestelijk Afrika": [
-        "Senegal",
-        "Guinea",
-        "Ivory Coast",
-        "Côte d'Ivoire",
-        "Burkina Faso",
-        "Benin",
-        "Togo",
-        "Ghana",
-        "Liberia",
-        "Sierra Leone",
-        "Gambia",
-        "Guinea-Bissau",
-
-        "Somalia",
-        "Tanzania",
-        "Uganda"
-    ],
+"Zuidwestelijk Afrika": [
+    "Senegal",
+    "Guinea",
+    "Ivory Coast",
+    "Burkina Faso",
+    "Benin",
+    "Togo",
+    "Ghana",
+    "Liberia",
+    "Sierra Leone",
+    "Gambia",
+    "Guinea Bissau"
+],
 
 
     // ==============================
@@ -346,17 +342,17 @@ const countryGroups = {
         "Chile"
     ],
 
-  "Noordelijk-Zuid-Amerika": [
+"Noordelijk-Zuid-Amerika": [
     "Suriname",
     "Guyana",
     "Venezuela"
 ],
-    "West-Zuid-Amerika": [
+    
+  "West-Zuid-Amerika": [
     "Colombia",
     "Peru",
     "Ecuador"
 ],
-
     // ==============================
     // OCEANIË
     // ==============================
