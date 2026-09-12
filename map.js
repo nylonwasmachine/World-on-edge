@@ -42,7 +42,10 @@ const countryGroups = {
     // ==============================
 
     "Frankrijk": [
-        "France"
+        "France",
+        "Belgium",
+        "Netherlands",
+        "Luxembourg"
     ],
 
     "Pools-Zwitserse Samenwerking": [
@@ -62,7 +65,13 @@ const countryGroups = {
 
     "Oostenrijk-Hongarije": [
         "Austria",
-        "Hungary"
+        "Hungary",
+        "Slovenia",
+        "Croatia",
+        "Bosnia and Herzegovina",
+        "Slovakia",
+        "Czech Republic",
+        "Czechia"
     ],
 
     "Oekraïne": [
@@ -145,8 +154,8 @@ const countryGroups = {
         "Malaysia",
         "Brunei",
         "Singapore",
-        "Papua New Guinea",
-        "Philippines"
+        "Philippines",
+        "Papua New Guinea"
     ],
 
     "Japans-Koreaanse Unie": [
@@ -194,6 +203,7 @@ const countryGroups = {
 
     "Marokkaanse Rijk": [
         "Morocco",
+        "Western Sahara",
         "Algeria",
         "Mali",
         "Mauritania",
@@ -233,7 +243,10 @@ const countryGroups = {
         "Niger",
         "Nigeria",
         "Sudan",
+        "South Sudan",
         "Libya",
+        "Chad",
+        "Cameroon",
         "Uganda"
     ],
 
@@ -253,6 +266,7 @@ const countryGroups = {
         "Senegal",
         "Guinea",
         "Ivory Coast",
+        "Côte d'Ivoire",
         "Burkina Faso",
         "Benin",
         "Togo",
@@ -260,7 +274,11 @@ const countryGroups = {
         "Liberia",
         "Sierra Leone",
         "Gambia",
-        "Guinea-Bissau"
+        "Guinea-Bissau",
+
+        "Somalia",
+        "Tanzania",
+        "Uganda"
     ],
 
 
@@ -283,16 +301,18 @@ const countryGroups = {
 
     "Caribisch Gebied": [
         "Bahamas",
+        "The Bahamas",
         "Barbados",
-        "Dominica",
-        "Dominican Republic",
-        "Haiti",
-        "Saint Lucia",
-        "Saint Vincent and the Grenadines",
         "Grenada",
-        "Trinidad and Tobago",
+        "Dominica",
+        "Saint Lucia",
         "Antigua and Barbuda",
-        "Saint Kitts and Nevis"
+        "Saint Kitts and Nevis",
+        "Saint Vincent and the Grenadines",
+        "Trinidad and Tobago",
+        "Puerto Rico",
+        "Dominican Republic",
+        "Haiti"
     ],
 
     "Jamaicubaanse Samenwerking": [
@@ -301,7 +321,6 @@ const countryGroups = {
     ],
 
     "Midden-Amerikaanse Unie": [
-        "Mexico",
         "Guatemala",
         "Belize",
         "El Salvador",
@@ -331,15 +350,15 @@ const countryGroups = {
     ],
 
     "Noordelijk-Zuid-Amerika": [
-        "Guyana",
         "Suriname",
+        "Guyana",
         "Venezuela"
     ],
 
     "West-Zuid-Amerika": [
+        "Colombia",
         "Peru",
-        "Ecuador",
-        "Colombia"
+        "Ecuador"
     ],
 
 
@@ -352,7 +371,6 @@ const countryGroups = {
         "New Zealand"
     ]
 };
-
 
 // --------------------------------------------------
 // NAMEN NORMALISEREN
