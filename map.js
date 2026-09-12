@@ -393,17 +393,22 @@ function belongsToPlayer(countryName) {
         return false;
     }
 
-    const group =
-        countryGroups[selectedCountry];
+    // Zoek de groep ook als hoofdletters/spaties/tekens verschillen
+    const selectedGroupKey = Object.keys(countryGroups).find(
+        key =>
+            normalizeCountryName(key) ===
+            normalizeCountryName(selectedCountry)
+    );
 
-    if (!group) {
+    if (!selectedGroupKey) {
         console.warn(
             "Geen landengroep gevonden voor:",
             selectedCountry
         );
-
         return false;
     }
+
+    const group = countryGroups[selectedGroupKey];
 
     const normalizedName =
         normalizeCountryName(countryName);
@@ -412,7 +417,6 @@ function belongsToPlayer(countryName) {
         normalizeCountryName(country) === normalizedName
     );
 }
-
 
 // --------------------------------------------------
 // LANDNAAM UIT GEOJSON HALEN
