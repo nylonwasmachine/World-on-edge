@@ -1,634 +1,757 @@
-console.log("WORLD ON EDGE MAP.JS V8 - PROVINCIES GELADEN");
+// ============================================================
+// WORLD ON EDGE - WORLD MAP
+// Europa + rest van de wereld zichtbaar
+// Frankrijk heeft voorlopig als enige 7 provincies
+// ============================================================
 
-// ==================================================
-// WORLD ON EDGE - MAP
-// PROVINCIE TEST: FRANKRIJK
-// ==================================================
-
-// --------------------------------------------------
-// SPELER
-// --------------------------------------------------
-
-const playerData =
-    sessionStorage.getItem("worldOnEdgePlayer");
+const playerData = JSON.parse(
+    sessionStorage.getItem("worldOnEdgePlayer") || "null"
+);
 
 const selectedCountry =
-    sessionStorage.getItem("worldOnEdgeCountry");
+    sessionStorage.getItem("selectedCountry") || "Frankrijk";
 
-if (!playerData) {
-    window.location.href = "login.html";
+
+// ============================================================
+// HUD
+// ============================================================
+
+const countryElement = document.getElementById("map-country");
+const pointsElement = document.getElementById("map-points");
+const manpowerElement = document.getElementById("map-manpower");
+const factoriesElement = document.getElementById("map-factories");
+
+if (playerData) {
+    countryElement.textContent =
+        playerData.country || selectedCountry;
+
+    pointsElement.textContent =
+        playerData.points || 0;
+
+    manpowerElement.textContent =
+        playerData.manpower || 0;
+
+    factoriesElement.textContent =
+        playerData.factories || 0;
+} else {
+    countryElement.textContent = selectedCountry;
 }
 
-const player = JSON.parse(playerData);
 
-
-// --------------------------------------------------
-// HUD
-// --------------------------------------------------
-
-document.getElementById("map-country").textContent =
-    selectedCountry || "Onbekend";
-
-document.getElementById("map-points").textContent = "0";
-document.getElementById("map-manpower").textContent = "0";
-document.getElementById("map-factories").textContent = "0";
-
-
-// --------------------------------------------------
-// TEST-RIJK
-// --------------------------------------------------
-
-const franceEmpire = [
-    "France",
-    "Belgium",
-    "Netherlands",
-    "Luxembourg"
-];
-
-
-// --------------------------------------------------
-// 7 PROVINCIES
-// --------------------------------------------------
-
-const franceProvinces = [
-    {
-        name: "Parijs",
-        capital: "Parijs",
-        coordinates: [2.3522, 48.8566],
-        capitalCity: true
-    },
-
-    {
-        name: "Amsterdam",
-        capital: "Amsterdam",
-        coordinates: [4.9041, 52.3676]
-    },
-
-    {
-        name: "Brussel",
-        capital: "Brussel",
-        coordinates: [4.3517, 50.8503]
-    },
-
-    {
-        name: "Lyon",
-        capital: "Lyon",
-        coordinates: [4.8357, 45.7640]
-    },
-
-    {
-        name: "Marseille",
-        capital: "Marseille",
-        coordinates: [5.3698, 43.2965]
-    },
-
-    {
-        name: "Toulouse",
-        capital: "Toulouse",
-        coordinates: [1.4442, 43.6047]
-    },
-
-    {
-        name: "Nantes",
-        capital: "Nantes",
-        coordinates: [-1.5536, 47.2184]
-    }
-];
-
-
-// --------------------------------------------------
+// ============================================================
 // KAART
-// --------------------------------------------------
+// ============================================================
 
 let map;
 
 try {
 
     map = L.map("world-map", {
-
         zoomControl: true,
-
+        attributionControl: false,
         minZoom: 2,
+        maxZoom: 7,
+        worldCopyJump: false
+    });
 
-        maxZoom: 8,
+    // Geen OpenStreetMap tiles!
+    // Alleen onze eigen GeoJSON wereldkaart.
 
-        worldCopyJump: false,
-
-        maxBounds: [
-            [-90, -180],
-            [90, 180]
-        ],
-
-        maxBoundsViscosity: 1.0
-
-    }).setView([50, 3], 4);
-
-    console.log("Leaflet geladen.");
 
 } catch (error) {
 
-    console.error(
-        "Leaflet fout:",
-        error
-    );
-
     showMapError(
-        "KAARTFOUT",
-        "Leaflet kon niet worden geladen."
+        "KAART FOUT",
+        "De kaart kon niet worden gestart."
     );
+
 }
 
 
-// --------------------------------------------------
-// GEOJSON
-// --------------------------------------------------
-
-const WORLD_MAP_URL =
-    "https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json";
-
-
-if (map) {
-
-    fetch(WORLD_MAP_URL)
-
-        .then(response => {
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "GeoJSON kon niet worden geladen."
-                );
-            }
-
-            return response.json();
-        })
-
-        .then(data => {
-
-            console.log(
-                "Wereldkaart geladen:",
-                data.features.length,
-                "landen"
-            );
-            
-// ------------------------------------------
-// HELE WERELD / EUROPA ACHTERGROND
-// ------------------------------------------
-
-L.geoJSON(data, {
-
-    style: {
-
-        fillColor: "#686868",
-
-        fillOpacity: 0.85,
-
-        color: "#555555",
-
-        weight: 1,
-
-        opacity: 1
-    }
-
-}).addTo(map);
-
-            // ------------------------------------------
-            // FRANKRIJK + BELGIË + NEDERLAND + LUXEMBURG
-            // ------------------------------------------
-
-            const empireFeatures =
-                data.features.filter(feature => {
-
-                    const name =
-                        getCountryName(feature);
-
-                    return franceEmpire.includes(name);
-                });
-
-
-            console.log(
-                "Gebieden van Frankrijk-rijk:",
-                empireFeatures.map(
-                    feature => getCountryName(feature)
-                )
-            );
-
-
-            if (empireFeatures.length !== 4) {
-
-                throw new Error(
-                    "Niet alle 4 gebieden van Frankrijk-rijk zijn gevonden."
-                );
-            }
-
-
-            // ------------------------------------------
-            // RIJK SAMENVOEGEN
-            // ------------------------------------------
-
-            const empireCollection =
-                turf.featureCollection(
-                    empireFeatures
-                );
-
-            const empire =
-                turf.union(empireCollection);
-
-
-            if (!empire) {
-
-                throw new Error(
-                    "Het Frankrijk-rijk kon niet worden samengevoegd."
-                );
-            }
-
-
-            // ------------------------------------------
-            // RIJK ACHTERGROND
-            // ------------------------------------------
-
-            L.geoJSON(empire, {
-
-                style: {
-
-                    fillColor: "#20c45a",
-
-                    fillOpacity: 0.9,
-
-                    color: "#333333",
-
-                    weight: 2,
-
-                    opacity: 1
-                }
-
-            }).addTo(map);
-
-
-            // ------------------------------------------
-            // PROVINCIEPUNTEN
-            // ------------------------------------------
-
-            const provincePoints =
-                turf.featureCollection(
-
-                    franceProvinces.map(
-                        province => {
-
-                            return turf.point(
-                                province.coordinates,
-                                {
-                                    name:
-                                        province.name,
-
-                                    capital:
-                                        province.capital,
-
-                                    capitalCity:
-                                        province.capitalCity || false
-                                }
-                            );
-                        }
-                    )
-                );
-
-
-            // ------------------------------------------
-            // VORONOI PROVINCIES
-            // ------------------------------------------
-
-            const bbox =
-                turf.bbox(empire);
-
-            const voronoi =
-                turf.voronoi(
-                    provincePoints,
-                    {
-                        bbox: bbox
-                    }
-                );
-
-
-            // ------------------------------------------
-            // PROVINCIES CLIPPEN
-            // ------------------------------------------
-
-            const provinceFeatures = [];
-
-
-            voronoi.features.forEach(
-                function(cell, index) {
-
-                    if (!cell) {
-                        return;
-                    }
-
-
-                    const clipped =
-                        turf.intersect(
-                            turf.featureCollection([
-                                cell,
-                                empire
-                            ])
-                        );
-
-
-                    if (!clipped) {
-                        return;
-                    }
-
-
-                    const province =
-                        franceProvinces[index];
-
-
-                    clipped.properties = {
-
-                        province:
-                            province.name,
-
-                        capital:
-                            province.capital,
-
-                        capitalCity:
-                            province.capitalCity || false
-                    };
-
-
-                    provinceFeatures.push(
-                        clipped
-                    );
-                }
-            );
-
-
-            console.log(
-                "Provincies gemaakt:",
-                provinceFeatures.length
-            );
-
-
-            // ------------------------------------------
-            // PROVINCIES TEKENEN
-            // ------------------------------------------
-
-            provinceFeatures.forEach(
-                function(provinceFeature) {
-
-                    const isOwnEmpire =
-                        normalizeCountryName(
-                            selectedCountry
-                        ) ===
-                        normalizeCountryName(
-                            "Frankrijk"
-                        );
-
-
-                    const layer =
-                        L.geoJSON(
-                            provinceFeature,
-                            {
-
-                                style: {
-
-                                    fillColor:
-                                        isOwnEmpire
-                                            ? "#20c45a"
-                                            : "#686868",
-
-                                    fillOpacity:
-                                        0.9,
-
-                                    color:
-                                        "#555555",
-
-                                    weight:
-                                        1.5,
-
-                                    opacity:
-                                        1
-                                }
-                            }
-                        ).addTo(map);
-
-
-                    layer.bindTooltip(
-                        provinceFeature.properties.province +
-                        " — " +
-                        provinceFeature.properties.capital,
-                        {
-                            sticky: true
-                        }
-                    );
-
-
-                    layer.on({
-
-                        mouseover:
-                            function(event) {
-
-                                event.target.setStyle({
-
-                                    weight: 2.5,
-
-                                    color: "#aaaaaa",
-
-                                    fillOpacity: 1
-                                });
-
-                                event.target.bringToFront();
-                            },
-
-
-                        mouseout:
-                            function(event) {
-
-                                event.target.setStyle({
-
-                                    fillColor:
-                                        isOwnEmpire
-                                            ? "#20c45a"
-                                            : "#686868",
-
-                                    fillOpacity:
-                                        0.9,
-
-                                    color:
-                                        "#555555",
-
-                                    weight:
-                                        1.5,
-
-                                    opacity:
-                                        1
-                                });
-                            },
-
-
-                        click:
-                            function() {
-
-                                console.log(
-                                    "Provincie aangeklikt:",
-                                    provinceFeature.properties.province
-                                );
-
-                                console.log(
-                                    "Hoofdstad:",
-                                    provinceFeature.properties.capital
-                                );
-                            }
-
-                    });
-                }
-            );
-
-
-            // ------------------------------------------
-            // HOOFDSTEDEN
-            // ------------------------------------------
-
-            franceProvinces.forEach(
-                function(province) {
-
-                    const marker =
-                        L.circleMarker(
-                            [
-                                province.coordinates[1],
-                                province.coordinates[0]
-                            ],
-                            {
-
-                                radius:
-                                    province.capitalCity
-                                        ? 8
-                                        : 5,
-
-                                color:
-                                    "#222222",
-
-                                weight:
-                                    2,
-
-                                fillColor:
-                                    "#ffffff",
-
-                                fillOpacity:
-                                    1
-                            }
-                        ).addTo(map);
-
-
-                    marker.bindTooltip(
-                        province.capital +
-                        (
-                            province.capitalCity
-                                ? " ★"
-                                : ""
-                        ),
-                        {
-                            direction: "top"
-                        }
-                    );
-
-
-                    marker.on(
-                        "click",
-                        function() {
-
-                            console.log(
-                                "Hoofdstad aangeklikt:",
-                                province.capital
-                            );
-                        }
-                    );
-                }
-            );
-
-
-            // ------------------------------------------
-            // KAART INSTELLEN
-            // ------------------------------------------
-
-            map.setView(
-    [48, 15],
-    4
-);
-
-            document.getElementById(
-                "map-status"
-            ).textContent =
-                "FRANKRIJK-RIJK • 7 PROVINCIES";
-
-
-            document.getElementById(
-                "map-error"
-            ).style.display =
-                "none";
-
-        })
-
-
-        .catch(error => {
-
-            console.error(
-                "Wereldkaart fout:",
-                error
-            );
-
-            showMapError(
-                "KAARTFOUT",
-                error.message
-            );
-        });
-}
-
-
-// --------------------------------------------------
-// HULPFUNCTIES
-// --------------------------------------------------
+// ============================================================
+// NAMEN NORMALISEREN
+// ============================================================
 
 function normalizeCountryName(name) {
 
-    if (!name) {
-        return "";
-    }
+    if (!name) return "";
 
     return name
-        .toString()
-        .trim()
         .toLowerCase()
+        .trim()
         .replace(/-/g, " ")
         .replace(/\s+/g, " ");
+
 }
 
+
+// ============================================================
+// EUROPESE RIJKEN
+// ============================================================
+
+const europeanRealms = {
+
+    "Frankrijk": [
+        "France",
+        "Belgium",
+        "Netherlands",
+        "Luxembourg"
+    ],
+
+    "Pools-Zwitserse Unie": [
+        "Poland",
+        "Switzerland",
+        "Belarus",
+        "Finland",
+        "Estonia",
+        "Latvia",
+        "Lithuania",
+        "Russia"
+    ],
+
+    "Duitsland": [
+        "Germany"
+    ],
+
+    "Oostenrijk-Hongarije": [
+        "Austria",
+        "Hungary",
+        "Slovenia",
+        "Croatia",
+        "Bosnia and Herzegovina",
+        "Slovakia",
+        "Czech Republic"
+    ],
+
+    "Oekraïne": [
+        "Ukraine"
+    ],
+
+    "Rusland": [
+        "Russia"
+    ],
+
+    "Zweden": [
+        "Sweden"
+    ],
+
+    "Groot-Brittannië": [
+        "United Kingdom",
+        "Ireland"
+    ],
+
+    "Servië": [
+        "Serbia",
+        "Kosovo",
+        "Montenegro",
+        "North Macedonia"
+    ],
+
+    "Groot-Türkiye": [
+        "Turkey",
+        "Greece",
+        "Albania",
+        "Bulgaria",
+        "Georgia",
+        "Armenia",
+        "Azerbaijan"
+    ],
+
+    "Roemenië": [
+        "Romania",
+        "Moldova"
+    ],
+
+    "Iberische Staat": [
+        "Spain",
+        "Portugal"
+    ],
+
+    "Italië": [
+        "Italy"
+    ]
+
+};
+
+
+// ============================================================
+// BELANGRIJK:
+// Rusland hoort bij Rusland, niet ook bij de Pools-Zwitserse Unie
+// Daarom maken we een speciale lijst voor de unie.
+// ============================================================
+
+europeanRealms["Pools-Zwitserse Unie"] = [
+    "Poland",
+    "Switzerland",
+    "Belarus",
+    "Finland",
+    "Estonia",
+    "Latvia",
+    "Lithuania"
+];
+
+
+// ============================================================
+// FRANKRIJK - 7 PROVINCIES
+// ============================================================
+
+const franceProvinces = [
+
+    {
+        name: "Parijs",
+        capital: true,
+        center: [2.3522, 48.8566]
+    },
+
+    {
+        name: "Amsterdam",
+        capital: false,
+        center: [4.9041, 52.3676]
+    },
+
+    {
+        name: "Brussel",
+        capital: false,
+        center: [4.3517, 50.8503]
+    },
+
+    {
+        name: "Lyon",
+        capital: false,
+        center: [4.8357, 45.7640]
+    },
+
+    {
+        name: "Marseille",
+        capital: false,
+        center: [5.3698, 43.2965]
+    },
+
+    {
+        name: "Toulouse",
+        capital: false,
+        center: [1.4442, 43.6047]
+    },
+
+    {
+        name: "Nantes",
+        capital: false,
+        center: [-1.5536, 47.2184]
+    }
+
+];
+
+
+// ============================================================
+// HELPER: LANDNAAM UIT GEOJSON
+// ============================================================
 
 function getCountryName(feature) {
 
-    const properties =
-        feature.properties || {};
+    if (!feature || !feature.properties) {
+        return "";
+    }
 
     return (
-        properties.name ||
-        properties.ADMIN ||
-        properties.NAME ||
-        properties.admin ||
-        properties.sovereignt ||
+        feature.properties.name ||
+        feature.properties.NAME ||
+        feature.properties.ADMIN ||
+        feature.properties.admin ||
         ""
     );
+
 }
 
 
-function showMapError(title, text) {
+// ============================================================
+// HELPER: FEATURES VINDEN
+// ============================================================
+
+function getRealmFeatures(data, countries) {
+
+    const wanted = countries.map(normalizeCountryName);
+
+    return data.features.filter(feature => {
+
+        const name = normalizeCountryName(
+            getCountryName(feature)
+        );
+
+        return wanted.includes(name);
+
+    });
+
+}
+
+
+// ============================================================
+// RIJK SAMENVOEGEN
+// ============================================================
+
+function mergeRealm(data, countries) {
+
+    const features = getRealmFeatures(
+        data,
+        countries
+    );
+
+    if (features.length === 0) {
+        return null;
+    }
+
+    // Eén land
+    if (features.length === 1) {
+        return features[0];
+    }
+
+    // Meerdere landen samenvoegen
+    try {
+
+        return turf.union(
+            turf.featureCollection(features)
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Kon rijk niet samenvoegen:",
+            countries,
+            error
+        );
+
+        return null;
+    }
+
+}
+
+
+// ============================================================
+// FRANKRIJK PROVINCIES MAKEN
+// ============================================================
+
+function drawFranceProvinces(
+    map,
+    franceEmpire,
+    isSelected
+) {
+
+    if (!franceEmpire) return;
+
+    const provincePoints =
+        turf.featureCollection(
+            franceProvinces.map(province =>
+                turf.point([
+                    province.center[0],
+                    province.center[1]
+                ], {
+                    provinceName: province.name,
+                    capital: province.capital
+                })
+            )
+        );
+
+    const bbox =
+        turf.bbox(franceEmpire);
+
+    const voronoi =
+        turf.voronoi(
+            provincePoints,
+            {
+                bbox: bbox
+            }
+        );
+
+    if (!voronoi) return;
+
+
+    // --------------------------------------------------------
+    // BASIS VAN FRANKRIJK
+    // --------------------------------------------------------
+
+    L.geoJSON(
+        franceEmpire,
+        {
+            style: {
+                fillColor: isSelected
+                    ? "#20c45a"
+                    : "#686868",
+
+                fillOpacity: 1,
+
+                color: "#333333",
+
+                weight: 2
+            }
+        }
+    ).addTo(map);
+
+
+    // --------------------------------------------------------
+    // 7 PROVINCIES
+    // --------------------------------------------------------
+
+    voronoi.features.forEach(
+        (cell, index) => {
+
+            const province =
+                franceProvinces[index];
+
+            if (!province) return;
+
+
+            let clipped;
+
+            try {
+
+                clipped = turf.intersect(
+                    turf.featureCollection([
+                        cell,
+                        franceEmpire
+                    ])
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Provincie kon niet worden geknipt:",
+                    province.name,
+                    error
+                );
+
+                return;
+            }
+
+
+            if (!clipped) return;
+
+
+            L.geoJSON(
+                clipped,
+                {
+
+                    style: {
+
+                        fillColor: isSelected
+                            ? "#20c45a"
+                            : "#686868",
+
+                        fillOpacity: 1,
+
+                        color: "#555555",
+
+                        weight: 1.5
+                    }
+
+                }
+
+            )
+            .bindTooltip(
+                province.name +
+                (province.capital
+                    ? " • Hoofdstad"
+                    : ""),
+                {
+                    sticky: true
+                }
+            )
+            .on(
+                "click",
+                function () {
+
+                    console.log(
+                        "Provincie:",
+                        province.name
+                    );
+
+                    console.log(
+                        "Hoofdstad:",
+                        province.capital
+                            ? "Ja"
+                            : "Nee"
+                    );
+
+                }
+            )
+            .addTo(map);
+
+        }
+    );
+
+
+    // --------------------------------------------------------
+    // STEDEN / HOOFDSTEDEN
+    // --------------------------------------------------------
+
+    franceProvinces.forEach(
+        province => {
+
+            const marker =
+                L.circleMarker(
+                    [
+                        province.center[1],
+                        province.center[0]
+                    ],
+                    {
+
+                        radius:
+                            province.capital
+                                ? 7
+                                : 4,
+
+                        fillColor:
+                            province.capital
+                                ? "#ffffff"
+                                : "#dddddd",
+
+                        fillOpacity: 1,
+
+                        color: "#222222",
+
+                        weight: 2
+                    }
+                );
+
+            marker
+                .bindTooltip(
+                    province.name
+                )
+                .addTo(map);
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// ANDERE RIJKEN
+// ============================================================
+
+function drawRealm(
+    map,
+    data,
+    realmName,
+    countries,
+    isSelected
+) {
+
+    // Frankrijk wordt apart met provincies getekend
+    if (realmName === "Frankrijk") {
+        return;
+    }
+
+
+    const realm =
+        mergeRealm(
+            data,
+            countries
+        );
+
+    if (!realm) {
+
+        console.warn(
+            "Geen GeoJSON-landen gevonden voor:",
+            realmName
+        );
+
+        return;
+    }
+
+
+    L.geoJSON(
+        realm,
+        {
+
+            style: {
+
+                fillColor:
+                    isSelected
+                        ? "#20c45a"
+                        : "#686868",
+
+                fillOpacity: 1,
+
+                color: "#333333",
+
+                weight: 1.5,
+
+                opacity: 1
+            }
+
+        }
+    )
+    .bindTooltip(
+        realmName
+    )
+    .addTo(map);
+
+}
+
+
+// ============================================================
+// KAART LADEN
+// ============================================================
+
+fetch(
+    "https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
+)
+
+.then(response => {
+
+    if (!response.ok) {
+        throw new Error(
+            "GeoJSON kon niet worden geladen."
+        );
+    }
+
+    return response.json();
+
+})
+
+.then(data => {
+
+
+    // ========================================================
+    // 1. HELE WERELD ALS BASIS
+    // ========================================================
+
+    L.geoJSON(
+        data,
+        {
+
+            style: {
+
+                fillColor: "#686868",
+
+                fillOpacity: 1,
+
+                color: "#555555",
+
+                weight: 1,
+
+                opacity: 1
+            }
+
+        }
+    ).addTo(map);
+
+
+    // ========================================================
+    // 2. EUROPESE RIJKEN
+    // ========================================================
+
+    Object.entries(
+        europeanRealms
+    ).forEach(
+        ([realmName, countries]) => {
+
+            const isSelected =
+                normalizeCountryName(
+                    selectedCountry
+                ) ===
+                normalizeCountryName(
+                    realmName
+                );
+
+            drawRealm(
+                map,
+                data,
+                realmName,
+                countries,
+                isSelected
+            );
+
+        }
+    );
+
+
+    // ========================================================
+    // 3. FRANKRIJK MET 7 PROVINCIES
+    // ========================================================
+
+    const franceEmpire =
+        mergeRealm(
+            data,
+            europeanRealms["Frankrijk"]
+        );
+
+    const franceSelected =
+        normalizeCountryName(
+            selectedCountry
+        ) ===
+        normalizeCountryName(
+            "Frankrijk"
+        );
+
+
+    drawFranceProvinces(
+        map,
+        franceEmpire,
+        franceSelected
+    );
+
+
+    // ========================================================
+    // 4. KAART POSITIE
+    // ========================================================
+
+    // Europa + westelijk Azië + een groot deel van Rusland
+    map.setView(
+        [50, 25],
+        3.5
+    );
+
+
+    // ========================================================
+    // STATUS
+    // ========================================================
+
+    const status =
+        document.getElementById(
+            "map-status"
+        );
+
+    if (status) {
+        status.textContent =
+            "WERELDKAART";
+    }
+
+})
+
+.catch(error => {
+
+    console.error(error);
+
+    showMapError(
+        "KAART FOUT",
+        "De wereldkaart kon niet worden geladen."
+    );
+
+});
+
+
+// ============================================================
+// FOUTMELDING
+// ============================================================
+
+function showMapError(
+    title,
+    message
+) {
 
     const errorBox =
-        document.getElementById("map-error");
+        document.getElementById(
+            "map-error"
+        );
+
+    if (!errorBox) return;
 
     errorBox.style.display =
         "flex";
 
     errorBox.innerHTML = `
         <strong>${title}</strong>
-        <span>${text}</span>
+        <span>${message}</span>
     `;
+
 }
