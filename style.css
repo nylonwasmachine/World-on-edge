@@ -183,13 +183,13 @@ footer {
     width: 100vw;
     height: 100vh;
 
-    background: #3b82b6;
+    background: #57cefc;
 
     z-index: 1;
 }
 
 .leaflet-container {
-    background: #3b82b6 !important;
+    background: ##57cefc !important;
 }
 
 /* ==================================================
@@ -367,14 +367,14 @@ footer {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    background: #3b82b6 !important;
+    background: #57cefc !important;
     z-index: 1;
 }
 
 #sea-background {
     position: absolute;
     inset: 0;
-    background: #3b82b6;
+    background: #57cefc;
     z-index: 0;
 }
 
