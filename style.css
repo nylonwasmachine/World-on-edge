@@ -385,4 +385,69 @@ footer {
     z-index: 1;
 }
 
+.map-mode-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+
+    display: flex;
+    gap: 8px;
+}
+
+.map-mode {
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(10,20,30,0.9);
+    color: white;
+
+    padding: 10px 16px;
+    border-radius: 8px;
+
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.map-mode:hover {
+    background: rgba(40,60,80,0.95);
+}
+
+.map-mode.active {
+    background: #ffffff;
+    color: #111;
+}
+
+.province-message {
+    position: fixed;
+    left: 50%;
+    top: 85px;
+    transform: translateX(-50%);
+
+    z-index: 2000;
+
+    background: rgba(10, 15, 20, 0.95);
+    color: white;
+
+    padding: 14px 22px;
+    border-radius: 8px;
+
+    font-weight: bold;
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,0.25);
+}
+
+.province-message.hidden {
+    display: none;
+}
+
+/* Landen/rijken blijven klikbaar */
+.realm-layer {
+    cursor: pointer;
+}
+
+/* Provincies */
+.province-layer {
+    cursor: pointer;
+}
+
 }
