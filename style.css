@@ -362,5 +362,27 @@ footer {
 
     box-shadow: none;
 }
+#world-map {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #3b82b6 !important;
+    z-index: 1;
+}
+
+#sea-background {
+    position: absolute;
+    inset: 0;
+    background: #3b82b6;
+    z-index: 0;
+}
+
+#world-map .leaflet-container {
+    position: absolute;
+    inset: 0;
+    background: transparent !important;
+    z-index: 1;
+}
 
 }
