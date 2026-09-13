@@ -188,6 +188,9 @@ footer {
     z-index: 1;
 }
 
+.leaflet-container {
+    background: #3b82b6 !important;
+}
 
 /* ==================================================
    MAP HUD
