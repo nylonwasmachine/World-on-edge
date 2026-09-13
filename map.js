@@ -170,7 +170,27 @@ if (map) {
                 data.features.length,
                 "landen"
             );
+            
+// ------------------------------------------
+// HELE WERELD / EUROPA ACHTERGROND
+// ------------------------------------------
 
+L.geoJSON(data, {
+
+    style: {
+
+        fillColor: "#686868",
+
+        fillOpacity: 0.85,
+
+        color: "#555555",
+
+        weight: 1,
+
+        opacity: 1
+    }
+
+}).addTo(map);
 
             // ------------------------------------------
             // FRANKRIJK + BELGIË + NEDERLAND + LUXEMBURG
@@ -530,13 +550,10 @@ if (map) {
             // KAART INSTELLEN
             // ------------------------------------------
 
-            map.fitBounds(
-                L.geoJSON(empire).getBounds(),
-                {
-                    padding: [30, 30]
-                }
-            );
-
+            map.setView(
+    [48, 15],
+    4
+);
 
             document.getElementById(
                 "map-status"
