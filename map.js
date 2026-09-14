@@ -881,9 +881,74 @@ map.setView(
 // GEOJSON LADEN
 // ======================================================
 
-const WORLD_MAP_URL =
-    "https://cdn.jsdelivr.net/gh/johan/world.geo.json@master/countries.geo.json";
+const LAND_MAP_URL =
+    "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_land.geojson";
 
+const COUNTRY_MAP_URL =
+    "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
+
+Promise.all([
+    fetch(LAND_MAP_URL),
+    fetch(COUNTRY_MAP_URL)
+])
+.then(async ([landResponse, countryResponse]) => {
+
+    if (!landResponse.ok || !countryResponse.ok) {
+        throw new Error("Gedetailleerde kaart kon niet worden geladen.");
+    }
+
+    const land = await landResponse.json();
+    const world = await countryResponse.json();
+
+    console.log("HIGH DETAIL WORLD MAP GELADEN");
+
+    // Achtergrond: alleen land
+    L.geoJSON(land, {
+        style: {
+            fillColor: "#7a7a7a",
+            fillOpacity: 1,
+            color: "#242424",
+            weight: 0.8,
+            opacity: 1
+        },
+
+        interactive: false
+    }).addTo(map);
+
+    // Hierna blijft je bestaande
+    // realms.forEach(...)
+    // code gewoon werken met 'world'.
+
+    realms.forEach(realm => {
+
+        const matching =
+            world.features.filter(feature => {
+
+                const name =
+                    getCountryName(feature);
+
+                return realm.countries.includes(name);
+            });
+
+        // JE BESTAANDE CODE HIERONDER
+        // blijft staan...
+    });
+
+})
+.catch(error => {
+
+    console.error(error);
+
+    if (errorElement) {
+
+        errorElement.innerHTML = `
+            <strong>KAARTFOUT</strong>
+            <span>De wereldkaart kon niet worden geladen.</span>
+        `;
+
+    }
+
+});
 
 fetch(WORLD_MAP_URL)
 
