@@ -1056,23 +1056,19 @@ Promise.all([
         // RIJK LAAG
         // ==============================================
 
-        const realmLayer =
-            L.geoJSON(
-                merged,
-                {
-                    style: {
-                       style: {
-    fillColor: "#777777",
-    fillOpacity: 0.12,
-
-    color: "#151515",
-    weight: 1.5,
-
-    opacity: 1
-}
-                }
-            );
-
+      const realmLayer =
+    L.geoJSON(
+        merged,
+        {
+            style: {
+                fillColor: "#777777",
+                fillOpacity: 0.12,
+                color: "#151515",
+                weight: 1.5,
+                opacity: 1
+            }
+        }
+    );
 
         realmLayer.bindTooltip(
             realm.name,
