@@ -1,4 +1,4 @@
-console.log("WORLD ON EDGE MAP V13 GELADEN");
+console.log("WORLD ON EDGE MAP V14 GELADEN");
 
 // ======================================================
 // SPELER
@@ -35,9 +35,9 @@ const statusElement =
 const errorElement =
     document.getElementById("map-error");
 
+
 if (countryElement) {
-    countryElement.textContent =
-        selectedCountry;
+    countryElement.textContent = selectedCountry;
 }
 
 if (pointsElement) {
@@ -69,8 +69,49 @@ const provinceMessage =
     document.getElementById("province-message");
 
 
-// Alle provincielagen worden hierin opgeslagen
+// Alle provincielagen
 const provinceGroups = [];
+
+
+// ======================================================
+// STATUS
+// ======================================================
+
+function updateStatus(text) {
+
+    if (statusElement) {
+        statusElement.textContent = text;
+    }
+
+}
+
+
+// ======================================================
+// PROVINCIE MELDING
+// ======================================================
+
+function showProvinceMessage() {
+
+    if (!provinceMessage) {
+        return;
+    }
+
+    provinceMessage.textContent =
+        "PROVINCIES KUNNEN NIET GELADEN WORDEN VOOR NU";
+
+    provinceMessage.classList.remove("hidden");
+
+    clearTimeout(
+        window.provinceMessageTimer
+    );
+
+    window.provinceMessageTimer =
+        setTimeout(() => {
+
+            provinceMessage.classList.add("hidden");
+
+        }, 3000);
+}
 
 
 // ======================================================
@@ -81,30 +122,35 @@ function setMode(mode) {
 
     currentMode = mode;
 
+
+    // Knoppen
     if (landModeButton) {
+
         landModeButton.classList.toggle(
             "active",
             mode === "land"
         );
+
     }
 
+
     if (provinceModeButton) {
+
         provinceModeButton.classList.toggle(
             "active",
             mode === "province"
         );
+
     }
 
-    if (provinceMessage) {
-        provinceMessage.classList.add(
-            "hidden"
-        );
-    }
 
-    // Eerst alle provincies verwijderen
+    // Oude provincies verwijderen
     provinceGroups.forEach(group => {
 
-        if (map.hasLayer(group.layer)) {
+        if (
+            group.layer &&
+            map.hasLayer(group.layer)
+        ) {
             map.removeLayer(group.layer);
         }
 
@@ -119,9 +165,7 @@ function setMode(mode) {
 
         updateStatus("WERELDKAART");
 
-        console.log(
-            "Modus: LAND"
-        );
+        console.log("Modus: LAND");
 
         return;
     }
@@ -133,10 +177,16 @@ function setMode(mode) {
 
     const realm =
         realms.find(
-            r => r.name === selectedCountry
+            realm =>
+                realm.name === selectedCountry
         );
 
-    if (!realm || !realm.provinces) {
+
+    if (
+        !realm ||
+        !realm.provinces ||
+        !realm.provinces.length
+    ) {
 
         showProvinceMessage();
 
@@ -160,6 +210,7 @@ function setMode(mode) {
                 selectedCountry
         );
 
+
     if (matchingGroup) {
 
         matchingGroup.layer.addTo(map);
@@ -168,7 +219,27 @@ function setMode(mode) {
             "PROVINCIES • " +
             selectedCountry
         );
+
+        console.log(
+            "Provincies geladen:",
+            selectedCountry
+        );
+
+    } else {
+
+        showProvinceMessage();
+
+        updateStatus(
+            "GEEN PROVINCIES"
+        );
+
+        console.log(
+            "Geen provincielaag gevonden:",
+            selectedCountry
+        );
+
     }
+
 }
 
 
@@ -181,11 +252,10 @@ if (landModeButton) {
     landModeButton.addEventListener(
         "click",
         () => {
-
             setMode("land");
-
         }
     );
+
 }
 
 
@@ -194,66 +264,22 @@ if (provinceModeButton) {
     provinceModeButton.addEventListener(
         "click",
         () => {
-
             setMode("province");
-
         }
     );
+
 }
 
 
 // ======================================================
-// MELDING
-// ======================================================
-
-function showProvinceMessage() {
-
-    if (!provinceMessage) {
-        return;
-    }
-
-    provinceMessage.textContent =
-        "PROVINCIES KUNNEN NIET GELADEN WORDEN VOOR NU";
-
-    provinceMessage.classList.remove(
-        "hidden"
-    );
-
-    clearTimeout(
-        window.provinceMessageTimer
-    );
-
-    window.provinceMessageTimer =
-        setTimeout(() => {
-
-            provinceMessage.classList.add(
-                "hidden"
-            );
-
-        }, 3000);
-}
-
-
-// ======================================================
-// STATUS
-// ======================================================
-
-function updateStatus(text) {
-
-    if (statusElement) {
-        statusElement.textContent =
-            text;
-    }
-}
-
-
-// ======================================================
-// LANDEN
+// RIJKEN / LANDEN
 // ======================================================
 
 const realms = [
 
+    // ==================================================
     // EUROPA
+    // ==================================================
 
     {
         name: "Frankrijk",
@@ -275,6 +301,7 @@ const realms = [
             ["Parijs", 2.3522, 48.8566, true]
         ]
     },
+
 
     {
         name: "Pools-Zwitserse Unie",
@@ -300,6 +327,7 @@ const realms = [
         ]
     },
 
+
     {
         name: "Duitsland",
 
@@ -317,6 +345,7 @@ const realms = [
             ["Dusseldorf", 6.9603, 51.2277]
         ]
     },
+
 
     {
         name: "Oostenrijk-Hongarije",
@@ -342,6 +371,7 @@ const realms = [
         ]
     },
 
+
     {
         name: "Oekraïne",
 
@@ -359,6 +389,7 @@ const realms = [
             ["Poltava", 34.5514, 49.5883]
         ]
     },
+
 
     {
         name: "Rusland",
@@ -378,6 +409,7 @@ const realms = [
         ]
     },
 
+
     {
         name: "Zweden",
 
@@ -395,6 +427,7 @@ const realms = [
             ["Malmo", 13.0038, 55.6050]
         ]
     },
+
 
     {
         name: "Groot-Brittannië",
@@ -414,6 +447,7 @@ const realms = [
             ["Belfast", -5.9301, 54.5973]
         ]
     },
+
 
     {
         name: "Servië",
@@ -436,6 +470,7 @@ const realms = [
             ["Novi sad", 19.8335, 45.2671]
         ]
     },
+
 
     {
         name: "Groote Türkiye",
@@ -461,6 +496,7 @@ const realms = [
         ]
     },
 
+
     {
         name: "Roemenië",
 
@@ -479,6 +515,7 @@ const realms = [
             ["Craiova", 23.7949, 44.3302]
         ]
     },
+
 
     {
         name: "Iberische Staat",
@@ -499,6 +536,7 @@ const realms = [
         ]
     },
 
+
     {
         name: "Italië",
 
@@ -518,10 +556,13 @@ const realms = [
     },
 
 
+    // ==================================================
     // AZIË
+    // ==================================================
 
     {
         name: "Indië",
+
         countries: [
             "India",
             "Pakistan",
@@ -532,8 +573,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "China",
+
         countries: [
             "China",
             "Mongolia",
@@ -541,8 +584,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "De Stannen",
+
         countries: [
             "Kazakhstan",
             "Kyrgyzstan",
@@ -551,8 +596,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Indonesisch Rijk",
+
         countries: [
             "Indonesia",
             "Malaysia",
@@ -563,8 +610,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Japans-Koreaanse Unie",
+
         countries: [
             "Japan",
             "North Korea",
@@ -573,8 +622,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Zuidwest-Azië",
+
         countries: [
             "Thailand",
             "Vietnam",
@@ -584,8 +635,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Tajik-Noordse Samenwerking",
+
         countries: [
             "Tajikistan",
             "Norway",
@@ -593,8 +646,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Oostelijk Midden-Oosten",
+
         countries: [
             "Saudi Arabia",
             "Iran",
@@ -606,8 +661,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Westelijk Midden-Oosten",
+
         countries: [
             "Palestine",
             "Syria",
@@ -617,10 +674,13 @@ const realms = [
     },
 
 
+    // ==================================================
     // AFRIKA
+    // ==================================================
 
     {
         name: "Marokkaanse Rijk",
+
         countries: [
             "Morocco",
             "Algeria",
@@ -631,8 +691,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Congo",
+
         countries: [
             "Republic of the Congo",
             "Democratic Republic of the Congo",
@@ -643,8 +705,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Zuid-Afrikaanse Republiek",
+
         countries: [
             "South Africa",
             "Lesotho",
@@ -659,15 +723,19 @@ const realms = [
         ]
     },
 
+
     {
         name: "Madagascar Rijk",
+
         countries: [
             "Madagascar"
         ]
     },
 
+
     {
         name: "Midden-Afrikaanse Unie",
+
         countries: [
             "Central African Republic",
             "Niger",
@@ -680,8 +748,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "Oostelijk Afrika",
+
         countries: [
             "Somalia",
             "Kenya",
@@ -692,15 +762,19 @@ const realms = [
         ]
     },
 
+
     {
         name: "Egypte",
+
         countries: [
             "Egypt"
         ]
     },
 
+
     {
         name: "Zuidwestelijk Afrika",
+
         countries: [
             "Senegal",
             "Guinea",
@@ -717,31 +791,40 @@ const realms = [
     },
 
 
+    // ==================================================
     // NOORD-AMERIKA
+    // ==================================================
 
     {
         name: "Amerika",
+
         countries: [
             "United States of America"
         ]
     },
 
+
     {
         name: "Canada",
+
         countries: [
             "Canada"
         ]
     },
 
+
     {
         name: "Mexico",
+
         countries: [
             "Mexico"
         ]
     },
 
+
     {
         name: "Caribisch Gebied",
+
         countries: [
             "Puerto Rico",
             "Bahamas",
@@ -756,16 +839,20 @@ const realms = [
         ]
     },
 
+
     {
         name: "Jamaicubaanse Samenwerking",
+
         countries: [
             "Jamaica",
             "Cuba"
         ]
     },
 
+
     {
         name: "Midden-Amerikaanse Unie",
+
         countries: [
             "Guatemala",
             "Belize",
@@ -778,10 +865,13 @@ const realms = [
     },
 
 
+    // ==================================================
     // ZUID-AMERIKA
+    // ==================================================
 
     {
         name: "Brazilië",
+
         countries: [
             "Brazil",
             "Paraguay",
@@ -789,22 +879,28 @@ const realms = [
         ]
     },
 
+
     {
         name: "Argentinië",
+
         countries: [
             "Argentina"
         ]
     },
 
+
     {
         name: "Chili",
+
         countries: [
             "Chile"
         ]
     },
 
+
     {
         name: "Noordelijk-Zuid-Amerika",
+
         countries: [
             "Suriname",
             "Guyana",
@@ -812,8 +908,10 @@ const realms = [
         ]
     },
 
+
     {
         name: "West-Zuid-Amerika",
+
         countries: [
             "Colombia",
             "Peru",
@@ -822,15 +920,19 @@ const realms = [
     },
 
 
+    // ==================================================
     // OCEANIË
+    // ==================================================
 
     {
         name: "Australië",
+
         countries: [
             "Australia",
             "New Zealand"
         ]
     }
+
 ];
 
 
@@ -851,6 +953,7 @@ function getCountryName(feature) {
         properties.sovereignt ||
         ""
     );
+
 }
 
 
@@ -860,16 +963,24 @@ function getCountryName(feature) {
 
 const map =
     L.map("world-map", {
+
         zoomControl: true,
+
         minZoom: 2,
+
         maxZoom: 10,
+
         worldCopyJump: false,
+
         maxBounds: [
             [-90, -180],
             [90, 180]
         ],
+
         maxBoundsViscosity: 1
+
     });
+
 
 map.setView(
     [20, 0],
@@ -878,7 +989,7 @@ map.setView(
 
 
 // ======================================================
-// GEOJSON LADEN
+// GEOJSON URL'S
 // ======================================================
 
 const LAND_MAP_URL =
@@ -887,251 +998,377 @@ const LAND_MAP_URL =
 const COUNTRY_MAP_URL =
     "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson";
 
+
+// ======================================================
+// GEOJSON LADEN
+// ======================================================
+
 Promise.all([
     fetch(LAND_MAP_URL),
     fetch(COUNTRY_MAP_URL)
 ])
-.then(async ([landResponse, countryResponse]) => {
 
-    if (!landResponse.ok || !countryResponse.ok) {
-        throw new Error("Gedetailleerde kaart kon niet worden geladen.");
-    }
-
-    const land = await landResponse.json();
-    const world = await countryResponse.json();
-
-    console.log("HIGH DETAIL WORLD MAP GELADEN");
-
-    // Achtergrond: alleen land
-    L.geoJSON(land, {
-        style: {
-            fillColor: "#7a7a7a",
-            fillOpacity: 1,
-            color: "#242424",
-            weight: 0.8,
-            opacity: 1
-        },
-
-        interactive: false
-    }).addTo(map);
-
-    // Hierna blijft je bestaande
-    // realms.forEach(...)
-    // code gewoon werken met 'world'.
-
-    realms.forEach(realm => {
-
-        const matching =
-            world.features.filter(feature => {
-
-                const name =
-                    getCountryName(feature);
-
-                return realm.countries.includes(name);
-            });
-
-        // JE BESTAANDE CODE HIERONDER
-        // blijft staan...
-    });
-
-})
+.then(
+    async ([landResponse, countryResponse]) => {
 
         // ==============================================
-        // RIJK SAMENVOEGEN
+        // CONTROLEREN
         // ==============================================
 
-        let merged =
-            matching[0];
-
-
-        for (
-            let i = 1;
-            i < matching.length;
-            i++
+        if (
+            !landResponse.ok ||
+            !countryResponse.ok
         ) {
 
-            try {
+            throw new Error(
+                "Gedetailleerde kaart kon niet worden geladen."
+            );
 
-                merged =
-                    turf.union(
-                        turf.featureCollection([
-                            merged,
-                            matching[i]
-                        ])
-                    );
-
-            } catch (error) {
-
-                console.warn(
-                    "Union fout:",
-                    realm.name,
-                    error
-                );
-
-            }
-
-        }
-
-
-        if (!merged) {
-            return;
         }
 
 
         // ==============================================
-        // RIJK LAAG
+        // JSON
         // ==============================================
 
-      const realmLayer =
-    L.geoJSON(
-        merged,
-        {
-            style: {
-                fillColor: "#777777",
-                fillOpacity: 0.12,
-                color: "#151515",
-                weight: 1.5,
-                opacity: 1
-            }
-        }
-    );
+        const land =
+            await landResponse.json();
 
-        realmLayer.bindTooltip(
-            realm.name,
-            {
-                sticky: true
-            }
+        const world =
+            await countryResponse.json();
+
+
+        console.log(
+            "HIGH DETAIL WORLD MAP GELADEN"
         );
 
 
         // ==============================================
-        // LAND KLIKKEN
+        // ACHTERGROND LAND
         // ==============================================
 
-        realmLayer.on(
-            "click",
-            event => {
+        L.geoJSON(
+            land,
+            {
 
-                L.DomEvent.stopPropagation(
-                    event
-                );
+                style: {
 
+                    fillColor:
+                        "#7a7a7a",
+
+                    fillOpacity:
+                        1,
+
+                    color:
+                        "#242424",
+
+                    weight:
+                        0.8,
+
+                    opacity:
+                        1
+
+                },
+
+                interactive:
+                    false
+
+            }
+        ).addTo(map);
+
+
+        // ==============================================
+        // RIJKEN OPBOUWEN
+        // ==============================================
+
+        realms.forEach(
+            realm => {
+
+                // --------------------------------------
+                // LANDEN ZOEKEN
+                // --------------------------------------
+
+                const matching =
+                    world.features.filter(
+                        feature => {
+
+                            const name =
+                                getCountryName(
+                                    feature
+                                );
+
+                            return realm.countries.includes(
+                                name
+                            );
+
+                        }
+                    );
+
+
+                // --------------------------------------
+                // NIETS GEVONDEN
+                // --------------------------------------
 
                 if (
-                    currentMode !==
-                    "land"
+                    !matching.length
                 ) {
+
+                    console.warn(
+                        "Geen kaartgebied gevonden voor:",
+                        realm.name
+                    );
+
                     return;
                 }
 
 
-                console.log(
-                    "LAND GESELECTEERD:",
-                    realm.name
-                );
+                // --------------------------------------
+                // EERSTE LAND
+                // --------------------------------------
+
+                let merged =
+                    matching[0];
 
 
-                updateStatus(
-                    "LAND • " +
-                    realm.name
-                );
+                // --------------------------------------
+                // LANDEN SAMENVOEGEN
+                // --------------------------------------
 
+                for (
+                    let i = 1;
+                    i < matching.length;
+                    i++
+                ) {
 
-                if (countryElement) {
+                    try {
 
-                    countryElement.textContent =
-                        realm.name;
+                        merged =
+                            turf.union(
+                                turf.featureCollection([
+                                    merged,
+                                    matching[i]
+                                ])
+                            );
+
+                    }
+                    catch (error) {
+
+                        console.warn(
+                            "Union fout:",
+                            realm.name,
+                            error
+                        );
+
+                    }
 
                 }
 
 
-                // geselecteerd uiterlijk
-                realmLayer.setStyle({
+                // --------------------------------------
+                // GEEN GEOMETRIE
+                // --------------------------------------
 
-                    fillOpacity:
-                        0.7,
+                if (!merged) {
 
-                    weight:
-                        3
+                    console.warn(
+                        "Geen samengevoegd gebied voor:",
+                        realm.name
+                    );
 
-                });
+                    return;
+                }
+
+
+                // ======================================
+                // RIJK LAAG
+                // ======================================
+
+                const realmLayer =
+                    L.geoJSON(
+                        merged,
+                        {
+
+                            style: {
+
+                                fillColor:
+                                    "#777777",
+
+                                fillOpacity:
+                                    0.12,
+
+                                color:
+                                    "#151515",
+
+                                weight:
+                                    1.5,
+
+                                opacity:
+                                    1
+
+                            }
+
+                        }
+                    );
+
+
+                // ======================================
+                // TOOLTIP
+                // ======================================
+
+                realmLayer.bindTooltip(
+                    realm.name,
+                    {
+                        sticky: true
+                    }
+                );
+
+
+                // ======================================
+                // LAND KLIKKEN
+                // ======================================
+
+                realmLayer.on(
+                    "click",
+                    event => {
+
+                        L.DomEvent.stopPropagation(
+                            event
+                        );
+
+
+                        if (
+                            currentMode !==
+                            "land"
+                        ) {
+
+                            return;
+                        }
+
+
+                        console.log(
+                            "LAND GESELECTEERD:",
+                            realm.name
+                        );
+
+
+                        updateStatus(
+                            "LAND • " +
+                            realm.name
+                        );
+
+
+                        if (countryElement) {
+
+                            countryElement.textContent =
+                                realm.name;
+
+                        }
+
+
+                        realmLayer.setStyle({
+
+                            fillOpacity:
+                                0.7,
+
+                            weight:
+                                3
+
+                        });
+
+                    }
+                );
+
+
+                // ======================================
+                // RIJK TOEVOEGEN
+                // ======================================
+
+                realmLayer.addTo(map);
+
+
+                // ======================================
+                // PROVINCIES
+                // ======================================
+
+                if (
+                    realm.provinces &&
+                    realm.provinces.length
+                ) {
+
+                    const provinceGroup =
+                        L.layerGroup();
+
+
+                    createProvinces(
+                        realm,
+                        merged,
+                        provinceGroup
+                    );
+
+
+                    provinceGroups.push({
+
+                        realm:
+                            realm,
+
+                        layer:
+                            provinceGroup
+
+                    });
+
+                }
 
             }
         );
 
 
-        realmLayer.addTo(map);
-
-
         // ==============================================
-        // PROVINCIES MAKEN
+        // KAART KLAAR
         // ==============================================
 
-        if (
-            realm.provinces
-        ) {
+        if (errorElement) {
 
-            const provinceGroup =
-                L.layerGroup();
-
-            createProvinces(
-                realm,
-                merged,
-                provinceGroup
-            );
-
-            provinceGroups.push({
-
-                realm:
-                    realm,
-
-                layer:
-                    provinceGroup
-
-            });
+            errorElement.style.display =
+                "none";
 
         }
 
-    });
+
+        updateStatus(
+            "WERELDKAART"
+        );
 
 
-    // ==================================================
-    // KAART KLAAR
-    // ==================================================
-
-    if (errorElement) {
-
-        errorElement.style.display =
-            "none";
+        console.log(
+            "WORLD ON EDGE MAP V14 KLAAR"
+        );
 
     }
+)
 
-    updateStatus(
-        "WERELDKAART"
-    );
+.catch(
+    error => {
 
-    console.log(
-        "WORLD ON EDGE MAP V13 KLAAR"
-    );
+        console.error(
+            "KAARTFOUT:",
+            error
+        );
 
-})
 
-.catch(error => {
+        if (errorElement) {
 
-    console.error(
-        error
-    );
+            errorElement.innerHTML = `
+                <strong>KAARTFOUT</strong>
+                <span>De wereldkaart kon niet worden geladen.</span>
+            `;
 
-    if (errorElement) {
+            errorElement.style.display =
+                "flex";
 
-        errorElement.innerHTML = `
-            <strong>KAARTFOUT</strong>
-            <span>De wereldkaart kon niet worden geladen.</span>
-        `;
+        }
 
     }
-
-});
+);
 
 
 // ======================================================
@@ -1144,6 +1381,10 @@ function createProvinces(
     provinceGroup
 ) {
 
+    // ==============================================
+    // PUNTEN MAKEN
+    // ==============================================
+
     const points =
         realm.provinces.map(
             province => {
@@ -1154,11 +1395,13 @@ function createProvinces(
                         province[2]
                     ],
                     {
+
                         provinceName:
                             province[0],
 
                         capital:
                             province[3] === true
+
                     }
                 );
 
@@ -1166,11 +1409,19 @@ function createProvinces(
         );
 
 
+    // ==============================================
+    // FEATURE COLLECTION
+    // ==============================================
+
     const collection =
         turf.featureCollection(
             points
         );
 
+
+    // ==============================================
+    // VORONOI
+    // ==============================================
 
     const voronoi =
         turf.voronoi(
@@ -1182,9 +1433,19 @@ function createProvinces(
         !voronoi ||
         !voronoi.features
     ) {
+
+        console.warn(
+            "Voronoi kon niet worden gemaakt:",
+            realm.name
+        );
+
         return;
     }
 
+
+    // ==============================================
+    // PROVINCIES DOORLOPEN
+    // ==============================================
 
     voronoi.features.forEach(
         (cell, index) => {
@@ -1198,17 +1459,24 @@ function createProvinces(
                 points[index];
 
 
+            if (!point) {
+                return;
+            }
+
+
             const provinceName =
-                point.properties
-                    .provinceName;
+                point.properties.provinceName;
 
 
             const isCapital =
-                point.properties
-                    .capital;
+                point.properties.capital;
 
 
             try {
+
+                // ==================================
+                // PROVINCIE KNIPPEN OP RIJKSGEBIED
+                // ==================================
 
                 const clipped =
                     turf.intersect(
@@ -1220,19 +1488,22 @@ function createProvinces(
 
 
                 if (!clipped) {
+
                     return;
                 }
 
 
-                // ======================================
+                // ==================================
                 // PROVINCIEVLAK
-                // ======================================
+                // ==================================
 
                 const provinceLayer =
                     L.geoJSON(
                         clipped,
                         {
-                            interactive: true,
+
+                            interactive:
+                                true,
 
                             style: {
 
@@ -1250,10 +1521,16 @@ function createProvinces(
 
                                 opacity:
                                     0.9
+
                             }
+
                         }
                     );
 
+
+                // ==================================
+                // PROVINCIE TOOLTIP
+                // ==================================
 
                 provinceLayer.bindTooltip(
                     provinceName,
@@ -1262,6 +1539,10 @@ function createProvinces(
                     }
                 );
 
+
+                // ==================================
+                // PROVINCIE KLIKKEN
+                // ==================================
 
                 provinceLayer.on(
                     "click",
@@ -1276,6 +1557,7 @@ function createProvinces(
                             currentMode !==
                             "province"
                         ) {
+
                             return;
                         }
 
@@ -1316,23 +1598,24 @@ function createProvinces(
                 );
 
 
+                // ==================================
+                // PROVINCIE TOEVOEGEN
+                // ==================================
+
                 provinceLayer.addTo(
                     provinceGroup
                 );
 
 
-                // ======================================
-                // STAD / HOOFDSTAD
-                // ======================================
+                // ==================================
+                // STAD / HOOFDSTAD MARKER
+                // ==================================
 
                 const marker =
                     L.circleMarker(
                         [
-                            point.geometry
-                                .coordinates[1],
-
-                            point.geometry
-                                .coordinates[0]
+                            point.geometry.coordinates[1],
+                            point.geometry.coordinates[0]
                         ],
                         {
 
@@ -1352,14 +1635,23 @@ function createProvinces(
 
                             fillOpacity:
                                 1
+
                         }
                     );
 
+
+                // ==================================
+                // MARKER TOOLTIP
+                // ==================================
 
                 marker.bindTooltip(
                     provinceName
                 );
 
+
+                // ==================================
+                // MARKER KLIKKEN
+                // ==================================
 
                 marker.on(
                     "click",
@@ -1374,8 +1666,15 @@ function createProvinces(
                             currentMode !==
                             "province"
                         ) {
+
                             return;
                         }
+
+
+                        console.log(
+                            "PROVINCIE MARKER:",
+                            provinceName
+                        );
 
 
                         updateStatus(
@@ -1397,11 +1696,16 @@ function createProvinces(
                 );
 
 
+                // ==================================
+                // MARKER TOEVOEGEN
+                // ==================================
+
                 marker.addTo(
                     provinceGroup
                 );
 
-            } catch (error) {
+            }
+            catch (error) {
 
                 console.warn(
                     "Provincie fout:",
@@ -1413,4 +1717,5 @@ function createProvinces(
 
         }
     );
+
 }
