@@ -119,31 +119,130 @@ function showProvinceMessage() {
 // ======================================================
 
 function setMode(mode) {
+
     currentMode = mode;
 
-    landModeButton.classList.toggle("active", mode === "land");
-    provinceModeButton.classList.toggle("active", mode === "province");
+    if (landModeButton) {
+        landModeButton.classList.toggle(
+            "active",
+            mode === "land"
+        );
+    }
+
+    if (provinceModeButton) {
+        provinceModeButton.classList.toggle(
+            "active",
+            mode === "province"
+        );
+    }
+
+
+    // ==============================================
+    // LAND MODUS
+    // ==============================================
 
     if (mode === "land") {
+
         provinceGroups.forEach(group => {
-            map.removeLayer(group);
+
+            if (group.layer) {
+                map.removeLayer(group.layer);
+            }
+
         });
 
         updateStatus("WERELDKAART");
+
         return;
     }
 
-    updateStatus("PROVINCIE");
 
-    // Provincies pas nu berekenen
-    realms.forEach(realm => {
-        if (!realm._mergedGeometry || realm._provincesLoaded) {
-            return;
-        }
+    // ==============================================
+    // PROVINCIE MODUS
+    // ==============================================
 
-        createProvinces(realm, realm._mergedGeometry);
+    const realm =
+        realms.find(
+            realm =>
+                realm.name === selectedCountry
+        );
+
+
+    if (
+        !realm ||
+        !realm.provinces ||
+        !realm.provinces.length
+    ) {
+
+        showProvinceMessage();
+
+        updateStatus(
+            "GEEN PROVINCIES"
+        );
+
+        return;
+    }
+
+
+    // ==============================================
+    // PROVINCIES EENMALIG MAKEN
+    // ==============================================
+
+    if (
+        !realm._provincesLoaded &&
+        realm._mergedGeometry &&
+        realm._provinceGroup
+    ) {
+
+        console.log(
+            "Provincies berekenen:",
+            realm.name
+        );
+
+        createProvinces(
+            realm,
+            realm._mergedGeometry,
+            realm._provinceGroup
+        );
+
         realm._provincesLoaded = true;
-    });
+
+        provinceGroups.push({
+            realm: realm,
+            layer: realm._provinceGroup
+        });
+
+    }
+
+
+    // ==============================================
+    // PROVINCIES TONEN
+    // ==============================================
+
+    if (realm._provinceGroup) {
+
+        realm._provinceGroup.addTo(map);
+
+        updateStatus(
+            "PROVINCIES • " +
+            realm.name
+        );
+
+        console.log(
+            "Provincies geladen:",
+            realm.name
+        );
+
+    } else {
+
+        showProvinceMessage();
+
+        updateStatus(
+            "GEEN PROVINCIES"
+        );
+
+    }
+
 }
 
     // ==============================================
