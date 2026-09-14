@@ -862,7 +862,7 @@ const map =
     L.map("world-map", {
         zoomControl: true,
         minZoom: 2,
-        maxZoom: 8,
+        maxZoom: 10,
         worldCopyJump: false,
         maxBounds: [
             [-90, -180],
@@ -873,7 +873,7 @@ const map =
 
 map.setView(
     [20, 0],
-    2
+    2.35
 );
 
 
@@ -1079,14 +1079,15 @@ fetch(WORLD_MAP_URL)
                 merged,
                 {
                     style: {
-                        fillColor: "#4caf50",
-                        fillOpacity: 0.35,
+                       style: {
+    fillColor: "#777777",
+    fillOpacity: 0.12,
 
-                        color: "#17232c",
-                        weight: 1.8,
+    color: "#151515",
+    weight: 1.5,
 
-                        opacity: 1
-                    }
+    opacity: 1
+}
                 }
             );
 
