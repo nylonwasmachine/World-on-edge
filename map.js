@@ -950,25 +950,7 @@ Promise.all([
 
 });
 
-fetch(WORLD_MAP_URL)
 
-.then(response => {
-
-    if (!response.ok) {
-        throw new Error(
-            "GeoJSON kon niet worden geladen."
-        );
-    }
-
-    return response.json();
-
-})
-
-.then(world => {
-
-    console.log(
-        "Wereldkaart geladen."
-    );
 
 
     // ==================================================
@@ -1333,13 +1315,13 @@ function createProvinces(
                             style: {
 
                                 fillColor:
-                                    "#4caf50",
+                                    "#777777",
 
                                 fillOpacity:
                                     0.12,
 
                                 color:
-                                    "#ffffff",
+                                    "#222222",
 
                                 weight:
                                     1,
