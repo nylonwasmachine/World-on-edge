@@ -9,9 +9,8 @@ const playerData =
         sessionStorage.getItem("worldOnEdgePlayer") || "{}"
     );
 
-const selectedCountry =
+let selectedCountry =
     sessionStorage.getItem("worldOnEdgeCountry") || "Onbekend";
-
 
 // ======================================================
 // HUD
@@ -1259,12 +1258,19 @@ Promise.all([
                         );
 
 
-                        if (countryElement) {
+                      selectedCountry = realm.name;
 
-                            countryElement.textContent =
-                                realm.name;
+sessionStorage.setItem(
+    "worldOnEdgeCountry",
+    realm.name
+);
 
-                        }
+if (countryElement) {
+
+    countryElement.textContent =
+        realm.name;
+
+}
 
 
                         realmLayer.setStyle({
