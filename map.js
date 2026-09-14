@@ -119,43 +119,32 @@ function showProvinceMessage() {
 // ======================================================
 
 function setMode(mode) {
-
     currentMode = mode;
 
+    landModeButton.classList.toggle("active", mode === "land");
+    provinceModeButton.classList.toggle("active", mode === "province");
 
-    // Knoppen
-    if (landModeButton) {
+    if (mode === "land") {
+        provinceGroups.forEach(group => {
+            map.removeLayer(group);
+        });
 
-        landModeButton.classList.toggle(
-            "active",
-            mode === "land"
-        );
-
+        updateStatus("WERELDKAART");
+        return;
     }
 
+    updateStatus("PROVINCIE");
 
-    if (provinceModeButton) {
-
-        provinceModeButton.classList.toggle(
-            "active",
-            mode === "province"
-        );
-
-    }
-
-
-    // Oude provincies verwijderen
-    provinceGroups.forEach(group => {
-
-        if (
-            group.layer &&
-            map.hasLayer(group.layer)
-        ) {
-            map.removeLayer(group.layer);
+    // Provincies pas nu berekenen
+    realms.forEach(realm => {
+        if (!realm._mergedGeometry || realm._provincesLoaded) {
+            return;
         }
 
+        createProvinces(realm, realm._mergedGeometry);
+        realm._provincesLoaded = true;
     });
-
+}
 
     // ==============================================
     // LAND MODUS
@@ -1287,41 +1276,24 @@ Promise.all([
 
 
                 // ======================================
-                // PROVINCIES
-                // ======================================
+// PROVINCIES
+// ======================================
 
-                if (
-                    realm.provinces &&
-                    realm.provinces.length
-                ) {
+// Provincies NIET laden bij het starten.
+// Alleen de gegevens bewaren zodat ze later
+// bij PROVINCIE-modus kunnen worden geladen.
 
-                    const provinceGroup =
-                        L.layerGroup();
+if (
+    realm.provinces &&
+    realm.provinces.length
+) {
 
+    realm._mergedGeometry = merged;
+    realm._provinceGroup = L.layerGroup();
+    realm._provincesLoaded = false;
 
-                    createProvinces(
-                        realm,
-                        merged,
-                        provinceGroup
-                    );
-
-
-                    provinceGroups.push({
-
-                        realm:
-                            realm,
-
-                        layer:
-                            provinceGroup
-
-                    });
-
-                }
-
-            }
-        );
-
-
+}
+                
         // ==============================================
         // KAART KLAAR
         // ==============================================
