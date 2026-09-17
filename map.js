@@ -726,12 +726,13 @@ const realms = [
 
 
     {
-        name: "Madagascar Rijk",
+    name: "Madagascar Rijk",
 
-        countries: [
-            "Madagascar"
-        ]
-    },
+    countries: [
+        "Madagascar",
+        "Antarctica"
+    ]
+},
 
 
     {
@@ -1179,7 +1180,45 @@ Promise.all([
                     return;
                 }
 
+// ======================================
+// OUDE LANDGRENZEN
+// ======================================
 
+if (
+    realm.name === "Oostenrijk-Hongarije" ||
+    realm.name === "Servië" ||
+    realm.name === "Zuid-Afrikaanse Republiek"
+) {
+
+    const oldBorders =
+        L.geoJSON(
+            {
+                type: "FeatureCollection",
+                features: matching
+            },
+            {
+
+                style: {
+
+                    fillOpacity: 0,
+
+                    color: "#555555",
+
+                    weight: 1,
+
+                    opacity: 0.8
+
+                },
+
+                interactive: false
+
+            }
+        );
+
+    oldBorders.addTo(map);
+
+}
+                
                 // ======================================
                 // RIJK LAAG
                 // ======================================
@@ -1273,16 +1312,33 @@ if (countryElement) {
 }
 
 
-                        realmLayer.setStyle({
+                       // Oud geselecteerd rijk terugzetten
+if (window.selectedRealmLayer) {
 
-                            fillOpacity:
-                                0.7,
+    window.selectedRealmLayer.setStyle({
 
-                            weight:
-                                3
+        fillOpacity: 0.12,
 
-                        });
+        color: "#151515",
 
+        weight: 1.5
+
+    });
+
+}
+
+// Nieuw rijk selecteren
+window.selectedRealmLayer = realmLayer;
+
+realmLayer.setStyle({
+
+    fillOpacity: 0.7,
+
+    color: "#ffffff",
+
+    weight: 3
+
+});
                     }
                 );
 
