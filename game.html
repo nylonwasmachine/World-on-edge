@@ -173,7 +173,11 @@
         #join-server-button {
             display: none;
         }
-
+<button id="points-tab-button">
+    PUNTEN
+</button>
+        }
+        
         /* COUNTRY SELECTION OVERLAY */
 
         #country-selection {
@@ -980,7 +984,26 @@
     <div class="bottom-bar">
         WORLD ON EDGE • COMMAND CENTER
     </div>
+    
+<div id="points-panel">
 
+    <div class="points-panel-inner">
+
+        <h2>PUNTEN</h2>
+
+        <div id="leaderboard-status">
+            Leaderboard laden...
+        </div>
+
+        <div id="leaderboard"></div>
+
+        <button id="close-points">
+            SLUITEN
+        </button>
+
+    </div>
+
+</div>
 
     <script src="game.js"></script>
 
