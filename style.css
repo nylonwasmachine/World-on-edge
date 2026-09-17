@@ -454,4 +454,63 @@ footer {
     cursor: pointer;
 }
 
+#points-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.75);
+}
+
+.points-panel-inner {
+    width: min(600px, 90vw);
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    background: #151515;
+    border: 1px solid #444;
+    border-radius: 10px;
+
+    padding: 24px;
+
+    color: white;
+}
+
+.points-panel-inner h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.leaderboard-row {
+    display: grid;
+
+    grid-template-columns:
+        55px 1fr auto;
+
+    gap: 12px;
+
+    align-items: center;
+
+    padding: 12px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.1);
+}
+
+.leaderboard-position {
+    font-weight: 700;
+}
+
+.leaderboard-name {
+    font-weight: 600;
+}
+
+.leaderboard-points {
+    font-weight: 700;
 }
