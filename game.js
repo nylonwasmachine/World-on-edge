@@ -447,4 +447,155 @@ if (!storedPlayer) {
     });
 
 });
+    
+// ==========================================
+// PUNTEN LEADERBOARD
+// ==========================================
+
+const pointsTabButton =
+    document.getElementById(
+        "points-tab-button"
+    );
+
+const pointsPanel =
+    document.getElementById(
+        "points-panel"
+    );
+
+const closePoints =
+    document.getElementById(
+        "close-points"
+    );
+
+const leaderboard =
+    document.getElementById(
+        "leaderboard"
+    );
+
+const leaderboardStatus =
+    document.getElementById(
+        "leaderboard-status"
+    );
+
+
+async function loadLeaderboard() {
+
+    leaderboardStatus.textContent =
+        "Leaderboard laden...";
+
+    leaderboard.innerHTML = "";
+
+    try {
+
+        const response =
+            await fetch(
+                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                "Leaderboard fout."
+            );
+
+        }
+
+        leaderboardStatus.textContent = "";
+
+        result.players.forEach(
+            (player, index) => {
+
+                const row =
+                    document.createElement("div");
+
+                row.className =
+                    "leaderboard-row";
+
+                const position =
+                    document.createElement("span");
+
+                position.className =
+                    "leaderboard-position";
+
+                position.textContent =
+                    "#" + (index + 1);
+
+
+                const name =
+                    document.createElement("span");
+
+                name.className =
+                    "leaderboard-name";
+
+                name.textContent =
+                    player.username;
+
+
+                const score =
+                    document.createElement("span");
+
+                score.className =
+                    "leaderboard-points";
+
+                score.textContent =
+                    player.points + " punten";
+
+
+                row.appendChild(position);
+                row.appendChild(name);
+                row.appendChild(score);
+
+                leaderboard.appendChild(row);
+
+            }
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Leaderboard error:",
+            error
+        );
+
+        leaderboardStatus.textContent =
+            "Leaderboard kon niet worden geladen.";
+
+    }
+
+}
+
+
+if (pointsTabButton) {
+
+    pointsTabButton.addEventListener(
+        "click",
+        () => {
+
+            pointsPanel.style.display =
+                "flex";
+
+            loadLeaderboard();
+
+        }
+    );
+
+}
+
+
+if (closePoints) {
+
+    closePoints.addEventListener(
+        "click",
+        () => {
+
+            pointsPanel.style.display =
+                "none";
+
+        }
+    );
 }
