@@ -168,9 +168,55 @@ if (!storedPlayer) {
     // RESOURCES
     // ==========================================
 
-    if (points) {
-        points.textContent = "0";
+    async function loadPlayerPoints() {
+
+    if (!points || !player.username) {
+        return;
     }
+
+    try {
+
+        const response =
+            await fetch(
+                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Punten konden niet worden geladen."
+            );
+        }
+
+        const currentPlayer =
+            result.players.find(
+                leaderboardPlayer =>
+                    leaderboardPlayer.username ===
+                    player.username
+            );
+
+        if (currentPlayer) {
+
+            points.textContent =
+                formatPoints(
+                    currentPlayer.points
+                );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Punten laden mislukt:",
+            error
+        );
+
+    }
+
+}
 
     if (factories) {
         factories.textContent = "0";
