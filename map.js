@@ -39,8 +39,95 @@ if (countryElement) {
     countryElement.textContent = selectedCountry;
 }
 
-if (pointsElement) {
-    pointsElement.textContent = "0";
+function formatPoints(value) {
+
+    const number =
+        Number(value) || 0;
+
+    if (number >= 1000000) {
+
+        return (
+            (number / 1000000)
+                .toFixed(
+                    number % 1000000 === 0 ? 0 : 1
+                )
+            + "M"
+        );
+
+    }
+
+    if (number >= 1000) {
+
+        return (
+            (number / 1000)
+                .toFixed(
+                    number % 1000 === 0 ? 0 : 1
+                )
+            + "K"
+        );
+
+    }
+
+    return number.toString();
+
+}
+
+async function loadMapPoints() {
+
+    const mapPoints =
+        document.getElementById(
+            "map-points"
+        );
+
+    if (
+        !mapPoints ||
+        !playerData.username
+    ) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Punten konden niet worden geladen."
+            );
+        }
+
+        const currentPlayer =
+            result.players.find(
+                player =>
+                    player.username ===
+                    playerData.username
+            );
+
+        if (currentPlayer) {
+
+            mapPoints.textContent =
+                formatPoints(
+                    currentPlayer.points
+                );
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Map punten laden mislukt:",
+            error
+        );
+
+    }
+
 }
 
 if (manpowerElement) {
