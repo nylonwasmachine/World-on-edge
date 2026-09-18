@@ -1,6 +1,6 @@
 // ==========================================
 // WORLD ON EDGE
-// Game initialization
+// GAME INITIALIZATION
 // ==========================================
 
 
@@ -18,8 +18,31 @@ if (!storedPlayer) {
 
 } else {
 
-    const player =
-        JSON.parse(storedPlayer);
+    let player;
+
+    try {
+
+        player = JSON.parse(storedPlayer);
+
+    } catch (error) {
+
+        console.error(
+            "Player data kon niet worden gelezen:",
+            error
+        );
+
+        sessionStorage.removeItem(
+            "worldOnEdgePlayer"
+        );
+
+        window.location.href = "login.html";
+
+    }
+
+
+    if (!player) {
+        window.location.href = "login.html";
+    }
 
 
     console.log(
@@ -33,56 +56,111 @@ if (!storedPlayer) {
     // ==========================================
 
     const playerName =
-        document.getElementById("player-name");
+        document.getElementById(
+            "player-name"
+        );
 
     const playerRole =
-        document.getElementById("player-role");
+        document.getElementById(
+            "player-role"
+        );
 
     const points =
-        document.getElementById("points");
+        document.getElementById(
+            "points"
+        );
 
     const factories =
-        document.getElementById("factories");
+        document.getElementById(
+            "factories"
+        );
 
     const manpower =
-        document.getElementById("manpower");
+        document.getElementById(
+            "manpower"
+        );
 
     const statusTitle =
-        document.getElementById("status-title");
+        document.getElementById(
+            "status-title"
+        );
 
     const statusText =
-        document.getElementById("status-text");
+        document.getElementById(
+            "status-text"
+        );
 
     const serverButton =
-        document.getElementById("server-button");
+        document.getElementById(
+            "server-button"
+        );
 
     const joinServerButton =
-        document.getElementById("join-server-button");
+        document.getElementById(
+            "join-server-button"
+        );
 
     const countrySelection =
-        document.getElementById("country-selection");
+        document.getElementById(
+            "country-selection"
+        );
 
     const closeCountrySelection =
-        document.getElementById("close-country-selection");
+        document.getElementById(
+            "close-country-selection"
+        );
+
+
+    // ==========================================
+    // CHECK REQUIRED ELEMENTS
+    // ==========================================
+
+    if (
+        !playerName ||
+        !playerRole ||
+        !statusTitle ||
+        !statusText ||
+        !serverButton ||
+        !joinServerButton ||
+        !countrySelection ||
+        !closeCountrySelection
+    ) {
+
+        console.error(
+            "Niet alle game.html elementen zijn gevonden."
+        );
+
+    }
 
 
     // ==========================================
     // PLAYER INFO
     // ==========================================
 
-    playerName.textContent =
-        player.username;
+    if (playerName) {
+
+        playerName.textContent =
+            player.username || "Onbekend";
+
+    }
 
 
-    if (player.role === "government") {
+    if (playerRole) {
 
-        playerRole.textContent =
-            "Government";
+        if (
+            player.role === "government"
+        ) {
 
-    } else {
+            playerRole.textContent =
+                "Government";
 
-        playerRole.textContent =
-            "Player";
+        } else {
+
+            playerRole.textContent =
+                "Player";
+
+        }
+
     }
 
 
@@ -90,16 +168,26 @@ if (!storedPlayer) {
     // RESOURCES
     // ==========================================
 
-    points.textContent = "0";
-    factories.textContent = "0";
-    manpower.textContent = "0";
+    if (points) {
+        points.textContent = "0";
+    }
+
+    if (factories) {
+        factories.textContent = "0";
+    }
+
+    if (manpower) {
+        manpower.textContent = "0";
+    }
 
 
     // ==========================================
     // INITIAL SERVER SCREEN
     // ==========================================
 
-    if (player.role === "government") {
+    if (
+        player.role === "government"
+    ) {
 
         statusTitle.textContent =
             "GEEN SERVER AANGEMAAKT";
@@ -120,6 +208,7 @@ if (!storedPlayer) {
 
         serverButton.style.display =
             "none";
+
     }
 
 
@@ -127,7 +216,9 @@ if (!storedPlayer) {
     // CREATE SERVER
     // ==========================================
 
-    if (player.role === "government") {
+    if (
+        player.role === "government"
+    ) {
 
         serverButton.addEventListener(
             "click",
@@ -149,7 +240,8 @@ if (!storedPlayer) {
                                 method: "POST",
 
                                 headers: {
-                                    "Content-Type": "application/json"
+                                    "Content-Type":
+                                        "application/json"
                                 },
 
                                 body: JSON.stringify({
@@ -228,9 +320,12 @@ if (!storedPlayer) {
 
                     serverButton.textContent =
                         "SERVER AANMAKEN";
+
                 }
+
             }
         );
+
     }
 
 
@@ -260,6 +355,7 @@ if (!storedPlayer) {
                 );
 
                 return;
+
             }
 
 
@@ -285,16 +381,15 @@ if (!storedPlayer) {
                     result.server.created_by;
 
 
-                // Iedereen mag JOIN SERVER zien.
-
                 joinServerButton.style.display =
                     "inline-block";
 
 
-                // Government ziet zijn eigen
-                // serverstatus.
+                // Government
 
-                if (player.role === "government") {
+                if (
+                    player.role === "government"
+                ) {
 
                     serverButton.style.display =
                         "inline-block";
@@ -304,23 +399,24 @@ if (!storedPlayer) {
 
                     serverButton.disabled =
                         true;
+
                 }
 
 
-                // Normale spelers krijgen
-                // geen SERVER AANMAKEN.
+                // Player
 
                 else {
 
                     serverButton.style.display =
                         "none";
+
                 }
 
             }
 
 
             // ==================================
-            // GEEN SERVER
+            // NO SERVER
             // ==================================
 
             else {
@@ -333,7 +429,9 @@ if (!storedPlayer) {
                     "none";
 
 
-                if (player.role === "government") {
+                if (
+                    player.role === "government"
+                ) {
 
                     statusText.textContent =
                         "Als Government kun je een server aanmaken.";
@@ -354,7 +452,9 @@ if (!storedPlayer) {
 
                     serverButton.style.display =
                         "none";
+
                 }
+
             }
 
 
@@ -364,7 +464,9 @@ if (!storedPlayer) {
                 "Could not check server:",
                 error
             );
+
         }
+
     }
 
 
@@ -396,6 +498,7 @@ if (!storedPlayer) {
 
             countrySelection.style.display =
                 "block";
+
         }
     );
 
@@ -410,6 +513,7 @@ if (!storedPlayer) {
 
             countrySelection.style.display =
                 "none";
+
         }
     );
 
@@ -424,178 +528,234 @@ if (!storedPlayer) {
         );
 
 
-  countryOptions.forEach(option => {
+    countryOptions.forEach(
+        option => {
 
-    option.addEventListener("click", () => {
+            option.addEventListener(
+                "click",
+                function () {
 
-        const country = option.dataset.country;
-
-        // Land opslaan
-        sessionStorage.setItem(
-            "worldOnEdgeCountry",
-            country
-        );
-
-        console.log(
-            "Land geselecteerd:",
-            country
-        );
-
-        // Naar de wereldkaart
-        window.location.href = "map.html";
-
-    });
-
-});
-    
-// ==========================================
-// PUNTEN LEADERBOARD
-// ==========================================
-
-const pointsTabButton =
-    document.getElementById(
-        "points-tab-button"
-    );
-
-const pointsPanel =
-    document.getElementById(
-        "points-panel"
-    );
-
-const closePoints =
-    document.getElementById(
-        "close-points"
-    );
-
-const leaderboard =
-    document.getElementById(
-        "leaderboard"
-    );
-
-const leaderboardStatus =
-    document.getElementById(
-        "leaderboard-status"
-    );
+                    const country =
+                        option.dataset.country;
 
 
-async function loadLeaderboard() {
+                    sessionStorage.setItem(
+                        "worldOnEdgeCountry",
+                        country
+                    );
 
-    leaderboardStatus.textContent =
-        "Leaderboard laden...";
 
-    leaderboard.innerHTML = "";
+                    console.log(
+                        "Land geselecteerd:",
+                        country
+                    );
 
-    try {
 
-        const response =
-            await fetch(
-                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
-            );
+                    window.location.href =
+                        "map.html";
 
-        const result =
-            await response.json();
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.error ||
-                "Leaderboard fout."
+                }
             );
 
         }
-
-        leaderboardStatus.textContent = "";
-
-        result.players.forEach(
-            (player, index) => {
-
-                const row =
-                    document.createElement("div");
-
-                row.className =
-                    "leaderboard-row";
-
-                const position =
-                    document.createElement("span");
-
-                position.className =
-                    "leaderboard-position";
-
-                position.textContent =
-                    "#" + (index + 1);
+    );
 
 
-                const name =
-                    document.createElement("span");
+    // ==========================================
+    // PUNTEN LEADERBOARD
+    // ==========================================
 
-                name.className =
-                    "leaderboard-name";
+    const pointsTabButton =
+        document.getElementById(
+            "points-tab-button"
+        );
 
-                name.textContent =
-                    player.username;
+    const pointsPanel =
+        document.getElementById(
+            "points-panel"
+        );
+
+    const closePoints =
+        document.getElementById(
+            "close-points"
+        );
+
+    const leaderboard =
+        document.getElementById(
+            "leaderboard"
+        );
+
+    const leaderboardStatus =
+        document.getElementById(
+            "leaderboard-status"
+        );
 
 
-                const score =
-                    document.createElement("span");
+    async function loadLeaderboard() {
 
-                score.className =
-                    "leaderboard-points";
-
-                score.textContent =
-                    player.points + " punten";
+        if (!leaderboardStatus || !leaderboard) {
+            return;
+        }
 
 
-                row.appendChild(position);
-                row.appendChild(name);
-                row.appendChild(score);
+        leaderboardStatus.textContent =
+            "Leaderboard laden...";
 
-                leaderboard.appendChild(row);
+        leaderboard.innerHTML = "";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.error ||
+                    "Leaderboard fout."
+                );
+
+            }
+
+
+            leaderboardStatus.textContent =
+                "";
+
+
+            result.players.forEach(
+                (leaderboardPlayer, index) => {
+
+                    const row =
+                        document.createElement(
+                            "div"
+                        );
+
+                    row.className =
+                        "leaderboard-row";
+
+
+                    const position =
+                        document.createElement(
+                            "span"
+                        );
+
+                    position.className =
+                        "leaderboard-position";
+
+                    position.textContent =
+                        "#" + (index + 1);
+
+
+                    const name =
+                        document.createElement(
+                            "span"
+                        );
+
+                    name.className =
+                        "leaderboard-name";
+
+                    name.textContent =
+                        leaderboardPlayer.username;
+
+
+                    const score =
+                        document.createElement(
+                            "span"
+                        );
+
+                    score.className =
+                        "leaderboard-points";
+
+                    score.textContent =
+                        leaderboardPlayer.points +
+                        " punten";
+
+
+                    row.appendChild(
+                        position
+                    );
+
+                    row.appendChild(
+                        name
+                    );
+
+                    row.appendChild(
+                        score
+                    );
+
+
+                    leaderboard.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Leaderboard error:",
+                error
+            );
+
+
+            leaderboardStatus.textContent =
+                "Leaderboard kon niet worden geladen.";
+
+        }
+
+    }
+
+
+    // ==========================================
+    // OPEN PUNTEN
+    // ==========================================
+
+    if (
+        pointsTabButton &&
+        pointsPanel
+    ) {
+
+        pointsTabButton.addEventListener(
+            "click",
+            function () {
+
+                pointsPanel.style.display =
+                    "flex";
+
+                loadLeaderboard();
 
             }
         );
 
     }
-    catch (error) {
 
-        console.error(
-            "Leaderboard error:",
-            error
+
+    // ==========================================
+    // CLOSE PUNTEN
+    // ==========================================
+
+    if (closePoints && pointsPanel) {
+
+        closePoints.addEventListener(
+            "click",
+            function () {
+
+                pointsPanel.style.display =
+                    "none";
+
+            }
         );
-
-        leaderboardStatus.textContent =
-            "Leaderboard kon niet worden geladen.";
 
     }
 
-}
-
-
-if (pointsTabButton) {
-
-    pointsTabButton.addEventListener(
-        "click",
-        () => {
-
-            pointsPanel.style.display =
-                "flex";
-
-            loadLeaderboard();
-
-        }
-    );
-
-}
-
-
-if (closePoints) {
-
-    closePoints.addEventListener(
-        "click",
-        () => {
-
-            pointsPanel.style.display =
-                "none";
-
-        }
-    );
 }
