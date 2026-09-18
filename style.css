@@ -1053,7 +1053,7 @@ body.game-page {
    LANDING PAGE
    ================================================== */
 
-main.landing-main {
+main {
     position: relative;
 
     z-index: 2;
@@ -1142,7 +1142,7 @@ h1 span {
     letter-spacing: 4px;
 }
 
-.landing-main > button {
+main > button {
     margin-top: 55px;
 
     width: 360px;
