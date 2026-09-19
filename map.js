@@ -78,7 +78,10 @@ async function loadMapPoints() {
         document.getElementById(
             "map-points"
         );
-
+    
+loadMapPoints();
+setInterval(loadMapPoints, 5000);
+    
     if (
         !mapPoints ||
         !playerData.username
