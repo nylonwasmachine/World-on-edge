@@ -82,5 +82,96 @@
 
     <script src="map.js?v=15"></script>
     
+    <script>
+    const mapPlayer =
+        JSON.parse(
+            sessionStorage.getItem("worldOnEdgePlayer") || "{}"
+        );
+
+    async function updateMapPoints() {
+
+        const pointsElement =
+            document.getElementById("map-points");
+
+        if (!pointsElement || !mapPlayer.username) {
+            return;
+        }
+
+        try {
+
+            const response =
+                await fetch(
+                    "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+                );
+
+            const result =
+                await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.error ||
+                    "Punten konden niet worden geladen."
+                );
+            }
+
+            const currentPlayer =
+                result.players.find(
+                    player =>
+                        player.username ===
+                        mapPlayer.username
+                );
+
+            if (currentPlayer) {
+
+                const number =
+                    Number(currentPlayer.points) || 0;
+
+                if (number >= 1000000) {
+
+                    pointsElement.textContent =
+                        (number / 1000000)
+                            .toFixed(
+                                number % 1000000 === 0
+                                    ? 0
+                                    : 1
+                            ) + "M";
+
+                } else if (number >= 1000) {
+
+                    pointsElement.textContent =
+                        (number / 1000)
+                            .toFixed(
+                                number % 1000 === 0
+                                    ? 0
+                                    : 1
+                            ) + "K";
+
+                } else {
+
+                    pointsElement.textContent =
+                        number.toString();
+
+                }
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Kaartpunten laden mislukt:",
+                error
+            );
+
+        }
+    }
+
+    updateMapPoints();
+
+    setInterval(
+        updateMapPoints,
+        5000
+    );
+</script>
+    
 </body>
 </html>
