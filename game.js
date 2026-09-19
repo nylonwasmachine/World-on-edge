@@ -206,6 +206,9 @@ function formatPoints(value) {
     if (!points || !player.username) {
         return;
     }
+        
+        loadPlayerPoints();
+setInterval(loadPlayerPoints, 5000);
 
     try {
 
