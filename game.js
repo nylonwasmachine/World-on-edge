@@ -201,43 +201,52 @@ function formatPoints(value) {
 
 }
     
-  async function loadPlayerPoints() {
+async function loadPlayerPoints() {
 
-    if (!points || !player.username) {
-        return;
-    }
+    console.log("Punten laden voor:", player.username);
 
     try {
 
-        const response =
-            await fetch(
-                "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
-            );
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/leaderboard"
+        );
 
-        const result =
-            await response.json();
+        console.log("Leaderboard response:", response.status);
+
+        const result = await response.json();
+
+        console.log("Leaderboard data:", result);
 
         if (!response.ok) {
             throw new Error(
-                result.error ||
-                "Punten konden niet worden geladen."
+                result.error || "Leaderboard kon niet worden geladen."
             );
         }
 
-        const currentPlayer =
-            result.players.find(
-                leaderboardPlayer =>
-                    leaderboardPlayer.username ===
-                    player.username
+        const currentPlayer = result.players.find(
+            p => p.username === player.username
+        );
+
+        console.log("Gevonden speler:", currentPlayer);
+
+        if (!currentPlayer) {
+            console.error(
+                "Speler niet gevonden in leaderboard:",
+                player.username
             );
+            return;
+        }
 
-        if (currentPlayer) {
-
-            points.textContent =
-                formatPoints(
-                    currentPlayer.points
-                );
-
+        if (points) {
+            points.textContent = formatPoints(currentPlayer.points);
+            console.log(
+                "Punten weergegeven:",
+                currentPlayer.points
+            );
+        } else {
+            console.error(
+                "Element #points bestaat niet."
+            );
         }
 
     } catch (error) {
@@ -248,9 +257,15 @@ function formatPoints(value) {
         );
 
     }
-
 }
 
+loadPlayerPoints();
+
+setInterval(
+    loadPlayerPoints,
+    5000
+);
+    
     if (factories) {
         factories.textContent = "0";
     }
