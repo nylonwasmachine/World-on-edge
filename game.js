@@ -201,14 +201,11 @@ function formatPoints(value) {
 
 }
     
-    async function loadPlayerPoints() {
+  async function loadPlayerPoints() {
 
     if (!points || !player.username) {
         return;
     }
-        
-        loadPlayerPoints();
-setInterval(loadPlayerPoints, 5000);
 
     try {
 
