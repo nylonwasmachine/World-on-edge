@@ -851,5 +851,105 @@ setInterval(
         );
 
     }
+    
+// ================================
+// PUNTEN SHOP
+// ================================
 
+const pointsShopTabButton =
+    document.getElementById("points-shop-tab-button");
+
+const pointsShopPanel =
+    document.getElementById("points-shop-panel");
+
+const closeShopButton =
+    document.getElementById("close-shop");
+
+const shopPoints =
+    document.getElementById("shop-points");
+
+const shopStatus =
+    document.getElementById("shop-status");
+
+const buyManpowerButton =
+    document.getElementById("buy-manpower");
+
+const buyFactoriesButton =
+    document.getElementById("buy-factories");
+
+
+// SHOP OPENEN
+
+if (pointsShopTabButton) {
+
+    pointsShopTabButton.addEventListener(
+        "click",
+        function () {
+
+            if (pointsShopPanel) {
+                pointsShopPanel.style.display = "flex";
+            }
+
+            if (shopPoints && points) {
+                shopPoints.textContent =
+                    points.textContent;
+            }
+
+        }
+    );
+
+}
+
+
+// SHOP SLUITEN
+
+if (closeShopButton) {
+
+    closeShopButton.addEventListener(
+        "click",
+        function () {
+
+            if (pointsShopPanel) {
+                pointsShopPanel.style.display = "none";
+            }
+
+        }
+    );
+
+}
+
+
+// MANKRACHT KOPEN
+
+if (buyManpowerButton) {
+
+    buyManpowerButton.addEventListener(
+        "click",
+        function () {
+
+            console.log(
+                "Mankracht kopen aangeklikt"
+            );
+
+        }
+    );
+
+}
+
+
+// FABRIEKEN KOPEN
+
+if (buyFactoriesButton) {
+
+    buyFactoriesButton.addEventListener(
+        "click",
+        function () {
+
+            console.log(
+                "Fabrieken kopen aangeklikt"
+            );
+
+        }
+    );
+}
 }
