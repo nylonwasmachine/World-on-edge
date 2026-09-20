@@ -984,12 +984,12 @@ async function buyResource(resource) {
 
         if (points) {
             points.textContent =
-                formatPoints(result.points);
+                formatPoints(result.new_points);
         }
 
         if (shopPoints) {
             shopPoints.textContent =
-                formatPoints(result.points);
+                formatPoints(result.new_points);
         }
 
 
@@ -997,7 +997,7 @@ async function buyResource(resource) {
 
         if (manpower) {
             manpower.textContent =
-                formatPoints(result.manpower);
+                formatPoints(result.new_manpower);
         }
 
 
@@ -1005,7 +1005,7 @@ async function buyResource(resource) {
 
         if (factories) {
             factories.textContent =
-                formatPoints(result.factories);
+                formatPoints(result.new_factories);
         }
 
 
@@ -1055,7 +1055,7 @@ if (buyManpowerButton) {
         "click",
         function () {
 
-            buyResource("manpower");
+            buyResource("new_manpower");
 
         }
     );
@@ -1071,7 +1071,7 @@ if (buyFactoriesButton) {
         "click",
         function () {
 
-            buyResource("factories");
+            buyResource("new_factories");
 
         }
     );
