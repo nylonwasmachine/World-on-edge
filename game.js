@@ -1055,7 +1055,7 @@ if (buyManpowerButton) {
         "click",
         function () {
 
-            buyResource("new_manpower");
+            buyResource("manpower");
 
         }
     );
@@ -1071,7 +1071,7 @@ if (buyFactoriesButton) {
         "click",
         function () {
 
-            buyResource("new_factories");
+            buyResource("factories");
 
         }
     );
