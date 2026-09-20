@@ -69,7 +69,35 @@
             box-shadow: none;
             color: white;
         }
+        
+        #points-shop-tab-button {
+    margin-right: 25px;
 
+    width: auto;
+    height: auto;
+
+    padding: 10px 18px;
+
+    background: #151b22;
+    color: white;
+
+    border: 1px solid #303944;
+
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+}
+
+#points-shop-tab-button:hover {
+    background: #222a33;
+    border-color: #7f8b98;
+
+    box-shadow: none;
+    color: white;
+}
+        
         .player-info {
             margin-left: auto;
             text-align: right;
@@ -502,6 +530,141 @@
 
             box-shadow: none;
         }
+        
+                /* PUNTEN SHOP */
+
+        #points-shop-panel {
+            position: fixed;
+            inset: 0;
+
+            z-index: 5000;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.78);
+        }
+
+        .points-shop-inner {
+            width: min(600px, 90vw);
+
+            background: #151515;
+
+            border: 1px solid #444;
+            border-radius: 10px;
+
+            padding: 24px;
+
+            color: white;
+        }
+
+        .points-shop-inner h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        .shop-balance {
+            color: #8994a0;
+            margin-bottom: 25px;
+        }
+
+        .shop-item {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 18px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.1);
+        }
+
+        .shop-item-info {
+            display: flex;
+            flex-direction: column;
+
+            gap: 5px;
+        }
+
+        .shop-item-name {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .shop-item-description {
+            color: #8994a0;
+            font-size: 13px;
+        }
+
+        .shop-buy-button {
+            width: auto;
+            min-width: 150px;
+
+            height: auto;
+
+            margin: 0;
+
+            padding: 10px 15px;
+
+            background: #222;
+            color: white;
+
+            border: 1px solid #555;
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .shop-buy-button:hover {
+            background: #333;
+            box-shadow: none;
+        }
+
+        .shop-buy-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        #shop-status {
+            margin-top: 18px;
+
+            color: #8994a0;
+
+            font-size: 13px;
+        }
+
+        #close-shop {
+            width: auto;
+            max-width: none;
+            height: auto;
+
+            margin-top: 20px;
+
+            padding: 10px 20px;
+
+            background: transparent;
+            color: white;
+
+            border: 1px solid #444;
+
+            cursor: pointer;
+        }
+
+        #close-shop:hover {
+            background: #222;
+            color: white;
+
+            box-shadow: none;
+        }
+        
     </style>
 </head>
 
@@ -515,9 +678,13 @@
             WORLD ON EDGE
         </div>
 
-        <button id="points-tab-button">
-            PUNTEN
-        </button>
+      <button id="points-tab-button">
+    PUNTEN
+</button>
+
+<button id="points-shop-tab-button">
+    PUNTEN SHOP
+</button>
 
         <div class="player-info">
             <div id="player-name">Loading...</div>
@@ -1153,7 +1320,119 @@
         </div>
 
     </div>
+    
+<!-- PUNTEN PANEL -->
 
+<div id="points-panel">
+
+    <div class="points-panel-inner">
+
+        <h2>PUNTEN</h2>
+
+        <div id="leaderboard-status">
+            Leaderboard laden...
+        </div>
+
+        <div id="leaderboard"></div>
+
+        <button id="close-points">
+            SLUITEN
+        </button>
+
+    </div>
+
+</div>
+
+    <!-- PUNTEN PANEL -->
+
+<div id="points-panel">
+
+    <div class="points-panel-inner">
+
+        <h2>PUNTEN</h2>
+
+        <div id="leaderboard-status">
+            Leaderboard laden...
+        </div>
+
+        <div id="leaderboard"></div>
+
+        <button id="close-points">
+            SLUITEN
+        </button>
+
+    </div>
+
+</div>
+
+<!-- PUNTEN SHOP -->
+
+<div id="points-shop-panel">
+
+    <div class="points-shop-inner">
+
+        <h2>PUNTEN SHOP</h2>
+
+        <div class="shop-balance">
+            Beschikbare punten:
+            <strong id="shop-points">0</strong>
+        </div>
+
+        <div class="shop-item">
+
+            <div class="shop-item-info">
+
+                <span class="shop-item-name">
+                    MANKRACHT
+                </span>
+
+                <span class="shop-item-description">
+                    1.000.000 punten → +100.000 mankracht
+                </span>
+
+            </div>
+
+            <button
+                class="shop-buy-button"
+                id="buy-manpower">
+                KOOP 100K
+            </button>
+
+        </div>
+
+        <div class="shop-item">
+
+            <div class="shop-item-info">
+
+                <span class="shop-item-name">
+                    FABRIEKEN
+                </span>
+
+                <span class="shop-item-description">
+                    1.000.000 punten → +10.000 fabrieken
+                </span>
+
+            </div>
+
+            <button
+                class="shop-buy-button"
+                id="buy-factories">
+                KOOP 10K
+            </button>
+
+        </div>
+
+        <div id="shop-status">
+            Klaar om te kopen.
+        </div>
+
+        <button id="close-shop">
+            SLUITEN
+        </button>
+
+    </div>
+
+</div>
 
     <script src="game.js"></script>
 
