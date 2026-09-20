@@ -919,7 +919,135 @@ if (closeShopButton) {
 }
 
 
-// MANKRACHT KOPEN
+// ================================
+// RESOURCE KOPEN
+// ================================
+
+async function buyResource(resource) {
+
+    if (!player.username) {
+        console.error(
+            "Geen ingelogde speler."
+        );
+        return;
+    }
+
+    const button =
+        resource === "manpower"
+            ? buyManpowerButton
+            : buyFactoriesButton;
+
+    if (button) {
+        button.disabled = true;
+    }
+
+    if (shopStatus) {
+        shopStatus.textContent =
+            "Aankoop verwerken...";
+    }
+
+    try {
+
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/buy-resource",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    username: player.username,
+                    resource: resource
+                })
+            }
+        );
+
+        const result =
+            await response.json();
+
+        console.log(
+            "Aankoop resultaat:",
+            result
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Aankoop mislukt."
+            );
+        }
+
+
+        // PUNTEN BIJWERKEN
+
+        if (points) {
+            points.textContent =
+                formatPoints(result.points);
+        }
+
+        if (shopPoints) {
+            shopPoints.textContent =
+                formatPoints(result.points);
+        }
+
+
+        // MANKRACHT BIJWERKEN
+
+        if (manpower) {
+            manpower.textContent =
+                formatPoints(result.manpower);
+        }
+
+
+        // FABRIEKEN BIJWERKEN
+
+        if (factories) {
+            factories.textContent =
+                formatPoints(result.factories);
+        }
+
+
+        if (shopStatus) {
+
+            if (resource === "manpower") {
+
+                shopStatus.textContent =
+                    "100.000 mankracht gekocht.";
+
+            } else {
+
+                shopStatus.textContent =
+                    "10.000 fabrieken gekocht.";
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Aankoop mislukt:",
+            error
+        );
+
+        if (shopStatus) {
+            shopStatus.textContent =
+                error.message;
+        }
+
+    } finally {
+
+        if (button) {
+            button.disabled = false;
+        }
+
+    }
+}
+
+
+// MANKRACHT
 
 if (buyManpowerButton) {
 
@@ -927,9 +1055,7 @@ if (buyManpowerButton) {
         "click",
         function () {
 
-            console.log(
-                "Mankracht kopen aangeklikt"
-            );
+            buyResource("manpower");
 
         }
     );
@@ -937,7 +1063,7 @@ if (buyManpowerButton) {
 }
 
 
-// FABRIEKEN KOPEN
+// FABRIEKEN
 
 if (buyFactoriesButton) {
 
@@ -945,11 +1071,10 @@ if (buyFactoriesButton) {
         "click",
         function () {
 
-            console.log(
-                "Fabrieken kopen aangeklikt"
-            );
+            buyResource("factories");
 
         }
     );
+
 }
 }
