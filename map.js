@@ -133,13 +133,67 @@ setInterval(loadMapPoints, 5000);
 
 }
 
-if (manpowerElement) {
-    manpowerElement.textContent = "0";
+async function loadMapResources() {
+
+    if (!playerData.username) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/player-resources",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: playerData.username
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Resources konden niet worden geladen."
+            );
+        }
+
+        if (pointsElement) {
+            pointsElement.textContent =
+                formatPoints(result.points);
+        }
+
+        if (manpowerElement) {
+            manpowerElement.textContent =
+                formatPoints(result.manpower);
+        }
+
+        if (factoriesElement) {
+            factoriesElement.textContent =
+                formatPoints(result.factories);
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Kaart resources laden mislukt:",
+            error
+        );
+
+    }
 }
 
-if (factoriesElement) {
-    factoriesElement.textContent = "0";
-}
+loadMapResources();
+
+setInterval(
+    loadMapResources,
+    5000
+);
 
 
 // ======================================================
