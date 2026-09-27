@@ -266,13 +266,7 @@ setInterval(
     5000
 );
     
-    if (factories) {
-        factories.textContent = "0";
-    }
-
-    if (manpower) {
-        manpower.textContent = "0";
-    }
+}
 
 
     // ==========================================
