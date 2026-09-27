@@ -1090,6 +1090,48 @@ async function buyResource(resource) {
                 result.error ||
                 "Aankoop mislukt."
             );
+            if (points) {
+    points.textContent =
+        formatPoints(result.points);
+}
+
+if (manpower) {
+    manpower.textContent =
+        formatPoints(result.manpower);
+}
+
+if (factories) {
+    factories.textContent =
+        formatPoints(result.factories);
+}
+
+if (shopPoints) {
+    shopPoints.textContent =
+        formatPoints(result.points);
+}
+
+if (shopStatus) {
+    shopStatus.textContent =
+        "Aankoop geslaagd!";
+}
+            } catch (error) {
+
+    console.error(
+        "Aankoop mislukt:",
+        error
+    );
+
+    if (shopStatus) {
+        shopStatus.textContent =
+            error.message;
+    }
+
+} finally {
+
+    if (button) {
+        button.disabled = false;
+    }
+
         }
 
 
