@@ -79,6 +79,65 @@ if (!storedPlayer) {
         document.getElementById(
             "manpower"
         );
+    async function loadPlayerResources() {
+
+    if (!player.username) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/player-resources",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: player.username
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Resources konden niet worden geladen."
+            );
+        }
+
+        if (points) {
+            points.textContent =
+                formatPoints(result.points);
+        }
+
+        if (manpower) {
+            manpower.textContent =
+                formatPoints(result.manpower);
+        }
+
+        if (factories) {
+            factories.textContent =
+                formatPoints(result.factories);
+        }
+
+        if (shopPoints) {
+            shopPoints.textContent =
+                formatPoints(result.points);
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Resources laden mislukt:",
+            error
+        );
+
+    }
+}
 
     const statusTitle =
         document.getElementById(
@@ -871,6 +930,66 @@ const buyManpowerButton =
 const buyFactoriesButton =
     document.getElementById("buy-factories");
 
+async function loadPlayerResources() {
+
+    if (!player.username) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            "https://bwbjnytzgntmqjefnpkh.supabase.co/functions/v1/player-resources",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: player.username
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.error ||
+                "Resources konden niet worden geladen."
+            );
+        }
+
+        if (points) {
+            points.textContent =
+                formatPoints(result.points);
+        }
+
+        if (manpower) {
+            manpower.textContent =
+                formatPoints(result.manpower);
+        }
+
+        if (factories) {
+            factories.textContent =
+                formatPoints(result.factories);
+        }
+
+        if (shopPoints) {
+            shopPoints.textContent =
+                formatPoints(result.points);
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Resources laden mislukt:",
+            error
+        );
+
+    }
+}
+
 
 // SHOP OPENEN
 
@@ -1071,4 +1190,12 @@ if (buyFactoriesButton) {
     );
 
 }
+
+loadPlayerResources();
+
+setInterval(
+    loadPlayerResources,
+    5000
+);
+
 }
